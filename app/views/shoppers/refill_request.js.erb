@@ -1,0 +1,6 @@
+$("#prescription-history")
+.html(`
+    <%= render partial: "shoppers/prescriptions", locals: { prescriptions: @prescriptions } %>
+`);
+document.querySelector('body').classList.remove('modal-open');
+$('.modal-backdrop').remove();

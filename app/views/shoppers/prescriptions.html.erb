@@ -1,0 +1,275 @@
+<style>
+    footer {
+        display: none;
+    }
+    
+    #main-body {
+        padding-top: 40px;
+    }
+</style>
+
+<div class="modal fade" id="new-prescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1051 !important;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="authenticationModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload a prescription</h5>
+                <a class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+                </a>
+            </div>
+            <div class="modal-body" id="prescriptionSubmission">
+                <div class="input-group mb-3" style="font-size: 15px !important;">
+                    <div class="custom-file cursor-pointer">
+                        <input type="file" class="custom-file-input no-box-shadow cursor-pointer" id="prescription_image" onclick="deletePrevious();" onchange="processImage()">
+                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02" id="fileUploadStatus">Choose file</label>
+                    </div>
+                </div>
+                <div id="prescriptionUploading" style="padding: 15px 20px;" class="text-center"></div>
+                <div id="prescriptionProcessed" class="text-center"></div>
+                <div id="submit-btn-div" class="add-margin-top text-center" style="display: none;">
+                    <div class="dropdown" id="submit-btn-dropdown">
+                        <a class="btn btn-success white submit-btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Submit to a pharmacy <i class="fa fa-angle-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <% @pharmacies.each do |ph| %>
+                                <a class="dropdown-item category cursor-pointer" onclick="sendToPharmacy(<%= ph.id %>, '<%= ph.name %>')">
+                                    <%= ph.name %>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="float-left text-left" style="width: 50%; padding: 15px;">
+            <a class="btn btn-primary box-shadow white"
+                onclick="window.location.href='/shoppers/<%= params[:shopper_id] %>/dashboard'">
+                <i class="fa fa-angle-left bold"></i> Dashboard
+            </a>
+        </div>
+        <div class="float-right text-right" style="width: 50%; padding: 15px;">
+            <a class="btn btn-primary box-shadow white"
+                data-toggle="modal" data-target="#new-prescription">
+                New <i class="fa fa-plus-circle bold"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-12" style="margin-bottom: 20px;">
+            <div class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header"
+                    style="border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                    <h6 class="white float-left">
+                        <i class="fa fa-file-text-o"></i> Prescription history
+                    </h6>
+                </div>
+                <div class="card-body" id="prescription-history">
+                    No prescription history
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    var data = {
+        "type": "prescriptions",
+        "shopperID": "<%= params[:shopper_id] %>"
+    };
+    
+    readShopperDataFromFirestore(data, "prescription-history");
+    
+    $('#prescription_image').on('change', e => {
+        $('#fileUploadStatus').html($('#prescription_image').get(0).files[0].name);
+    });
+    
+    // $('#prescription-image-upload-btn').on('click', processImage);
+    
+    function processImage() {
+        $('#prescriptionUploading')
+        .html(`
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+            style="font-size: 28px;"></i><br />
+            <p class="font-16">Processing your image...</p>
+        `);
+        var imageUrl = $('#prescription_image').get(0).files[0];
+        var imageName = ('customers/<%= params[:shopper_id] %>/prescriptions/' + imageUrl.name);
+        var storageRef = firebase.storage().ref();
+        storageRef.child(imageName).put(imageUrl).then((snapShot) => {
+            storageRef.child(imageName).getDownloadURL().then((url) => {
+                // $.post('/store_prescription_image', { data: {"url": url} })
+                // .done((done) => {
+                    // var data = {"type": "prescription_image", "url": url};
+                    // addDataToFirestore(data);
+                    $('#prescriptionUploading').empty().hide();
+                    $('#storeprescriptionImageText').remove();
+                    var img = document.createElement('img');
+                    img.setAttribute('src', url);
+                    img.setAttribute('height', '200');
+                    img.setAttribute('id', 'prescription-image');
+                    document.querySelector('#prescriptionProcessed')
+                    .appendChild(img);
+                    $('#prescription-image').css('border', '3px solid #33a3ad');
+                    $('#prescription-image').css('border-radius', '5px');
+                    $('#prescriptionProcessed').show();
+                    var link = document.createElement('input');
+                    link.setAttribute('value', url);
+                    link.setAttribute('type', 'hidden');
+                    link.setAttribute('id', 'prescription-url');
+                    document.querySelector('#prescriptionSubmission')
+                    .appendChild(link);
+                    $('#submit-btn-div').show();
+                // });
+            });
+        }).catch((error) => {
+            $('#prescription-image-upload-btn').html('Upload');
+            toastr.warning('<span class="theme-red">There was an error saving this image. Please try again.</span>')
+        });
+    }
+    
+    function deletePrevious() {
+        var imageUrl = $('#prescription_image').get(0).files[0];
+        if (imageUrl) {
+            var imageName = ('customer/<%= params[:shopper_id] %>/prescriptions/' + imageUrl.name);
+            var storageRef = firebase.storage().ref();
+            storageRef.child(imageName).delete.then((done) => {})
+            .catch((error) => {
+                toastr.warning('Failed to perform this action. Try reloading the page.');
+                return;
+            });
+        }
+    }
+    
+    function sendToPharmacy(id, name) {
+        var url = document.querySelector('#prescription-url').value;
+        var customerID = "<%= params[:shopper_id] %>";
+        console.log(id, name, url)
+        $('#prescriptionSubmission')
+        .html(`
+            <div style="padding: 20px 5px;" class="text-center">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+                style="font-size: 28px;"></i><br />
+                <p class="font-16">Sending your prescription over...</p>
+            </div>
+        `);
+        $.post('/send_prescription_to_pharmacy', { id: id, url: url, customer_id: customerID })
+        .done((done) => {
+            $('#prescriptionSubmission')
+            .html(`
+                <div class="input-group mb-3" style="font-size: 15px !important;">
+                    <div class="custom-file cursor-pointer">
+                        <input type="file" class="custom-file-input no-box-shadow cursor-pointer" id="prescription_image" onclick="deletePrevious();" onchange="processImage()">
+                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02" id="fileUploadStatus">Choose file</label>
+                    </div>
+                </div>
+                <div id="prescriptionUploading" style="padding: 15px 20px;" class="text-center"></div>
+                <div id="prescriptionProcessed" class="text-center"></div>
+                <div id="submit-btn-div" class="add-margin-top text-center" style="display: none;">
+                    <div class="dropdown" id="submit-btn-dropdown">
+                        <a class="btn btn-success white submit-btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Submit to a pharmacy <i class="fa fa-angle-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <% @pharmacies.each do |ph| %>
+                                <a class="dropdown-item category cursor-pointer" onclick="sendToPharmacy(<%= ph.id %>, '<%= ph.name %>')">
+                                    <%= ph.name %>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            `);
+            toastr.success('Your prescription has been sent!');
+        }).fail((fail) => {
+            $('#prescriptionSubmission')
+            .html(`
+                <div style="padding: 20px 5px;" class="text-center">
+                    <i class="fa fa-times-circle-o theme-red" 
+                    style="font-size: 40px;"></i><br />
+                    <p class="font-16">Your prescription could not be sent.</p>
+                </div>
+            `);
+        });
+    }
+    
+    function refillRequest(prescription, pharmacyID, pharmacyName) {
+        console.log('refill-request-modal-body-' + prescription.toString());
+        $('#refill-request-modal-body-' + prescription.toString())
+        .html(`
+            <p class="bold">Send refill request to ` + pharmacyName + `?</p>
+            <div style="margin-top: 20px;" class="text-center">
+                <a class="btn btn-primary white" onclick="sendRefillRequest(` + prescription.toString() + ", '" + pharmacyID + "'" + `)">
+                    Confirm <i class="fa fa-check-circle"></i>
+                </a>
+                <a class="btn btn-danger white" onclick="cancelRefillRequest(` + prescription.toString() + ", '" + pharmacyID + "', " + "'" + pharmacyName + "'" + `)">
+                    Cancel <i class="fa fa-times-circle"></i>
+                </a>
+            </div>
+        `);
+    }
+    
+    function cancelRefillRequest(prescription, pharmacyID, pharmacyName) {
+        $('#refill-request-modal-body-' + prescription.toString())
+        .html(`
+            <p class="bold">
+                Send refill request to:
+            </p>
+            <div class="dropdown">
+                <a class="btn btn-success white submit-btn" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    style="margin-top: 20px;">
+                    Choose a pharmacy <i class="fa fa-angle-down"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <% @pharmacies.each do |ph| %>
+                        <a class="dropdown-item category cursor-pointer" onclick="refillRequest(` + prescription.toString() + ", '" + pharmacyID + "', " + "'" + pharmacyName + "'" + `)">
+                            <%= ph.name %>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                    <% end %>
+                </div>
+            </div>
+        `);
+    }
+    
+    function sendRefillRequest(prescription, pharmacyID) {
+        $('#refill-request-modal-body-' + prescription.toString())
+        .html(`
+            <div style="padding: 30px 5px;" class="text-center">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+                style="font-size: 36px;"></i><br />
+                <p class="font-16">Submitting your request...</p>
+            </div>
+        `);
+        $.post('/send_refill_request', { prescription_id: prescription, pharmacy_id: pharmacyID, shopper_id: "<%= params[:shopper_id] %>" })
+        .done((done) => {
+            $('#refill-request-modal-body-' + prescription.toString())
+            .html(`
+                <div style="padding: 20px 5px;" class="text-center">
+                    <i class="fa fa-check-circle-o theme-green" 
+                    style="font-size: 40px;"></i><br />
+                    <p class="font-16">Your request has been sent!</p>
+                </div>
+            `);
+            toastr.success('Your prescription has been sent!');
+        }).fail((fail) => {
+            $('#refill-request-modal-body-' + prescription.toString())
+            .html(`
+                <div style="padding: 20px 5px;" class="text-center">
+                    <i class="fa fa-times-circle-o theme-red" 
+                    style="font-size: 40px;"></i><br />
+                    <p class="font-16">Your request could not be sent. Try reloading the page.</p>
+                </div>
+            `);
+        });
+    }
+</script>

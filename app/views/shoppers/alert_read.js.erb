@@ -1,0 +1,5 @@
+$("#newAlerts")
+.html(`
+    <%= render partial: "alerts", locals: { alerts: @alerts } %>
+`);
+toastr.success('This alert has been marked as read!');

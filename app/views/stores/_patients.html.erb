@@ -1,0 +1,36 @@
+<div class="card no-border box-shadow">
+    <div class="card-header">
+        <h6>Patients</h6>
+    </div>
+    <div class="card-body">
+        <% patients.each do |pt| %>
+            <div class="row">
+                <div class="col-md-2">
+                    <span class="font-14 bold theme-color"><%= pt.full_name %></span>
+                </div>
+                <div class="col-md-2">
+                    Coverage: <span class="font-14 theme-color"><%= "active" %></span>
+                </div>
+                <div class="col-md-2">
+                    Prescriptions: <span class="font-14 theme-color">3</span>
+                </div>
+                <div class="col-md-3 font-14">
+                    Last refill on:
+                    <span class="font-14 theme-color">
+                        <%= select_prescription.filled_on.strftime('%m/%d/%y at %l:%M%p') %>
+                    </span>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="dropdown">
+                        <a class="btn btn-primary font-14 white" href="/patients">
+                            View profile <i class="fa fa-user-circle-o"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr style="margin-bottom: 10px; margin-top: 10px;">
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

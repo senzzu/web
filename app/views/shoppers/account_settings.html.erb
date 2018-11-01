@@ -2,20 +2,109 @@
     footer {
         display: none;
     }
+    
+    #main-body {
+        padding-top: 40px;
+    }
 </style>
 
-<div class="container">
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-8 offset-md-2">
-            <section id="accountDetails">
-                <div class='row'>
-                    <div class="col-md-12">
-                        <h5 class="">Account details</h5>
-                        <hr style="height: 2px; background-color: #525f7f; border-color: #525f7f; margin-bottom: 15px;">
+<div class="modal fade" id="new-insurance" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1051 !important;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="authenticationModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Insurance</h5>
+                <a class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+                </a>
+            </div>
+            <div class="modal-body" id="prescriptionSubmission">
+                <div class="input-group mb-3" style="font-size: 15px !important;">
+                    <div class="custom-file cursor-pointer">
+                        <input type="file" class="custom-file-input no-box-shadow cursor-pointer" id="prescription_image" onclick="deletePrevious();" onchange="processImage()">
+                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02" id="fileUploadStatus">Upload a photo of your card</label>
                     </div>
                 </div>
-                <div class='row' id="accountDetailsLines"></div>
-            </section>
+                <div id="prescriptionUploading" style="padding: 15px 20px;" class="text-center"></div>
+                <div id="prescriptionProcessed" class="text-center"></div>
+                <div id="submit-btn-div" class="add-margin-top text-center" style="display: none;">
+                    <a class="btn btn-success white submit-btn" id="processInsuranceImage">
+                        Process <i class="fa fa-check-circle-o"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-8">
+            <div id="accountDetails" class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header">
+                    <h5 class="white">Account</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="accountDetailsLines"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div id="coverageDetails" class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header">
+                    <h5 class="white float-left">Insurance</h5>
+                    <% if @coverage %>
+                        <button class="btn btn-primary float-right" onclick="changeInsurance();"
+                            data-toggle="modal" data-target="#new-insurance">
+                            change
+                        </button>
+                    <% end %>
+                </div>
+                <div class="card-body" id="insurance-card-body">
+                    <% if @coverage %>
+                        <div class="row" id="coverageDetailsLines">
+                            <div class="col-md-12">
+                                <p class="font-18">
+                                    Carrier: <span class="theme-blue bold"><%= @coverage.carrier %></span>
+                                </p>
+                            </div>
+                            <div class="col-md-12">
+                                <p class="font-15">
+                                    Member ID: <span class="theme-green"><%= @coverage.member_id %></span>
+                                </p>
+                            </div>
+                            <div style="margin-top: 20px; margin-bottom: 20px;">
+                                <div class="col-md-6 float-left">
+                                    <p class="font-14">
+                                        Provider name: <span class="theme-color"><%= @coverage.provider_name %></span>
+                                    </p>
+                                </div>
+                                <div class="col-md-6 float-right">
+                                    <p class="font-14">
+                                        Provider phone: <span class="theme-color"><%= @coverage.provider_phone %></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <div class="col-md-12 float-left">
+                                    <p class="font-13">
+                                        RxBin: <span class="theme-color" style="margin-right: 5px;"><%= @coverage.rx_bin %></span>
+                                        RxGrp: <span class="theme-color"><%= @coverage.rx_group %></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <% else %>
+                        <p class="font-15 text-center">No insurance info uploaded</p>
+                        <div class="text-center" style="margin-top: 15px;">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#new-insurance">
+                                Upload insurance
+                            </button>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -28,4 +117,78 @@
     };
     
     readShopperDataFromFirestore(data);
+    
+    $('#prescription_image').on('change', e => {
+        $('#fileUploadStatus').html($('#prescription_image').get(0).files[0].name);
+    });
+    
+    // $('#prescription-image-upload-btn').on('click', processImage);
+    
+    function processImage() {
+        $('#prescriptionUploading')
+        .html(`
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+            style="font-size: 28px;"></i><br />
+            <p class="font-16">Processing your image...</p>
+        `);
+        var imageUrl = $('#prescription_image').get(0).files[0];
+        var imageName = ('customers/<%= params[:shopper_id] %>/prescriptions/' + imageUrl.name);
+        var storageRef = firebase.storage().ref();
+        storageRef.child(imageName).put(imageUrl).then((snapShot) => {
+            storageRef.child(imageName).getDownloadURL().then((url) => {
+                // $.post('/store_prescription_image', { data: {"url": url} })
+                // .done((done) => {
+                    // var data = {"type": "prescription_image", "url": url};
+                    // addDataToFirestore(data);
+                    $('#prescriptionUploading').empty().hide();
+                    $('#storeprescriptionImageText').remove();
+                    var img = document.createElement('img');
+                    img.setAttribute('src', url);
+                    img.setAttribute('height', '200');
+                    img.setAttribute('id', 'prescription-image');
+                    document.querySelector('#prescriptionProcessed')
+                    .appendChild(img);
+                    $('#prescription-image').css('border', '3px solid #33a3ad');
+                    $('#prescription-image').css('border-radius', '5px');
+                    $('#prescriptionProcessed').show();
+                    var link = document.createElement('input');
+                    link.setAttribute('value', url);
+                    link.setAttribute('type', 'hidden');
+                    link.setAttribute('id', 'prescription-url');
+                    document.querySelector('#prescriptionSubmission')
+                    .appendChild(link);
+                    document.querySelector('#processInsuranceImage')
+                    .setAttribute('onclick', "processInsuranceImage('" + url + "', '<%= params[:shopper_id] %>')");
+                    $("#processInsuranceImage").show();
+                    $('#submit-btn-div').show();
+                // });
+            });
+        }).catch((error) => {
+            $('#prescription-image-upload-btn').html('Upload');
+            toastr.warning('<span class="theme-red">There was an error saving this image. Please try again.</span>')
+        });
+    }
+    
+    function deletePrevious() {
+        var imageUrl = $('#prescription_image').get(0).files[0];
+        if (imageUrl) {
+            var imageName = ('customer/<%= params[:shopper_id] %>/prescriptions/' + imageUrl.name);
+            var storageRef = firebase.storage().ref();
+            storageRef.child(imageName).delete.then((done) => {})
+            .catch((error) => {
+                toastr.warning('Failed to perform this action. Try reloading the page.');
+                return;
+            });
+        }
+    }
+    
+    function processInsuranceImage(url, shopperID) {
+        $('#processInsuranceImage')
+        .html(`
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+            style="font-size: 28px;"></i><br />
+            <p class="font-16">Processing your details...</p>
+        `);
+        $.post('/process_insurance_image', { url: url, shopper_id: shopperID });
+    }
 </script>

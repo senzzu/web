@@ -21,10 +21,13 @@ class ShoppersController < ApplicationController
         @apartment_number = data["shopperAptNumber"]
         @shopper_name = data["shopperName"]
         @content = data["content"]
-        author_string = data[:author]
-        @author = author_string.split(' ')[0] + ' ' + author_string.split(' ')[1][0] + '.'
-        @review = StoreReview.create(store_id: @store_id, shopper_id: @shopper_uid, author: @author, content: @content)
-        @content = @content.gsub("'", "\\\\'")
+        @author_string = data[:author]
+        if !@author_string.nil?
+            @author_string = data[:author]
+            @author = @author_string.split(' ')[0] + ' ' + @author_string.split(' ')[1][0] + '.'
+            @review = StoreReview.create(store_id: @store_id, shopper_id: @shopper_uid, author: @author, content: @content)
+            @content = @content.gsub("'", "\\\\'")
+        end
         render :layout => false 
     end
     
@@ -36,6 +39,10 @@ class ShoppersController < ApplicationController
         @type = data["type"]
         @shopper_id = data["shopperID"] || ''
         @url = request.original_url
+        @alerts = HealthAlert.where(customer_id: @shopper_id, read: false).reverse
+        @prescriptions = Prescription.where(customer_id: @shopper_id).reverse
+        @payments = BillingHistory.where(customer_id: @shopper_id).reverse
+        @pharmacies = Store.all
         render :layout => false 
     end
     
@@ -52,6 +59,60 @@ class ShoppersController < ApplicationController
                 format.js { render 'item_request_error', :layout => false }
             end
         end
+    end
+    
+    def alert_read
+        @alert = HealthAlert.find_by(id: params[:id])
+        @alert.update(read: true)
+        @alerts = HealthAlert.where(customer_id: params[:shopper_id], read: false).reverse
+        render :layout => false
+    end
+    
+    def prescriptions
+        @pharmacies = Store.all
+    end
+    
+    def dashboard
+        @alerts = HealthAlert.where(customer_id: @shopper_id, read: false).reverse
+        @prescriptions = Prescription.where(customer_id: @shopper_id).reverse
+        @payments = BillingHistory.where(customer_id: @shopper_id).reverse
+        @pharmacies = Store.all
+    end
+    
+    def account_settings
+        @coverage = Coverage.find_by(shopper_id: params[:shopper_id])
+    end
+    
+    def process_insurance_image
+        @coverage = Coverage.find_by(shopper_id: params[:shopper_id])
+        if @coverage.nil?
+            @coverage = Coverage.create(
+                shopper_id: params[:shopper_id],
+                carrier: "Healthfirst",
+                member_id: "FH92HF83",
+                provider_name: "Ronald Doe",
+                provider_phone: "555-555-5555",
+                rx_bin: "092HDL7",
+                rx_group: "Rx0000",
+                generic_copay: 0.0,
+                brand_copay: 0.0,
+                otc_copay: 0.0
+            )
+        else
+            @coverage.update(
+                shopper_id: params[:shopper_id],
+                carrier: "Medicare",
+                member_id: "FH92HF83",
+                provider_name: "Jane M. Doe",
+                provider_phone: "666-666-6666",
+                rx_bin: "092HDL7",
+                rx_group: "Rx1111",
+                generic_copay: 0.0,
+                brand_copay: 0.0,
+                otc_copay: 0.0
+            )
+        end
+        render :layout => false
     end
     
     private

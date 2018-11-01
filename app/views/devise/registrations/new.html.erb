@@ -97,7 +97,7 @@
                 <div class="actions" style="margin-top: 10px;">
                   <div class="row">
                     <div class="col-md-12">
-                      <%= f.submit "Create account", class:"btn btn-primary btn-block box-shadow height-55" %>
+                      <%= f.submit "Create account", class:"btn btn-primary btn-block box-shadow height-55", data: {"disable-with": "Creating your account..."} %>
                     </div>
                   </div>
                 </div>
@@ -122,10 +122,3 @@
     </div>
   </div>
 </section>
-
-<script>
-  $('#new_store').on('submit', e => {
-    $('#logIn').css('opacity', '0.7');
-    document.getElementById('logIn').value = 'Logging you in...';
-  });
-</script>

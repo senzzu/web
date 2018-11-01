@@ -3,16 +3,17 @@ $('#allStores').html(`
         <div class="row">
             <% @stores.each do |store| %>
                 <div class="col-md-4 cursor-pointer" style="margin-bottom: 20px;" onclick="window.location.replace('/stores/<%= store.id %>/<%= store.slug %>')">
-                    <div class="card" style="background-image: url('<%= store.banner_image %>'); background-size: cover; background-position: center; height: 160px;"></div>
-                    <h6 class="" style="margin-top: 15px; margin-bottom: 5px;"><%= store.name %> <span class="badge badge-primary"><%= store.category || "drugstore" %></span></h6>
-                    <p class="font-15">
-                        <span class="badge badge-primary">
-                            $<%= logistics_details_for(store) %> minimum
-                        </span> &bull;
-                        <span>
-                            45-60mns
-                        </span>
-                    </p>
+                    <div class="card no-border" style="border-radius: 5px;">
+                        <div class="card-body"
+                            style="border-top-left-radius: 5px; border-top-right-radius: 5px;
+                                background-image: url('<%= store.banner_image %>');
+                                background-size: cover; background-position: center;
+                                height: 160px;"></div>
+                        <div class="card-footer background-blue"
+                            style="border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                            <h6 class="white"><%= store.name %> <span class="badge badge-primary"><%= store.category || "drugstore" %></span></h6>
+                        </div>
+                    </div>
                 </div>
             <% end %>
         </div>

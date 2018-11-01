@@ -88,15 +88,15 @@ if (type === "checkout") {
                 $('#accountDetailsLines').html(`
                     <div class="col-md-12">
                         <form id="accountDetailsForm" data-remote="true">
-                            <label class="bold add-margin-top">Name</label class="bold add-margin-top">
+                            <label class="bold">Name</label>
                             <input type="text" class="form-control add-margin-bottom" id="accountName" value=` + name + `>
-                            <label class="bold add-margin-top">Email</label class="bold add-margin-top">
+                            <label class="bold add-margin-top">Email</label>
                             <input type="email" class="form-control add-margin-bottom" id="accountEmail" value=` + email + `>
-                            <label class="bold add-margin-top">Phone number</label class="bold add-margin-top">
+                            <label class="bold add-margin-top">Phone number</label>
                             <input type="text" class="form-control add-margin-bottom" id="accountPhone" value=` + phone + `>
-                            <label class="bold add-margin-top">Full address</label class="bold add-margin-top">
+                            <label class="bold add-margin-top">Full address</label>
                             <input type="text" class="form-control add-margin-bottom" id="accountAddress" value=` + "'" + address + "'" + `>
-                            <label class="bold add-margin-top">Apartment number (if any)</label class="bold add-margin-top">
+                            <label class="bold add-margin-top">Apartment number (if any)</label>
                             <input type="text" class="form-control add-margin-bottom" id="accountAptNumber" value=` + "'" + aptNumber + "'" + `>
                             <input type="hidden" class="form-control add-margin-bottom" id="accountID" value=` + id + `>
                             <button type="submit" class="btn btn-primary height-55 white" id="updateShopperBtn" onclick="updateShopper('<%= @shopper_id %>')">
@@ -112,15 +112,15 @@ if (type === "checkout") {
             $('#accountDetailsLines').html(`
                 <div class="col-md-12">
                     <form id="accountDetailsForm" data-remote="true">
-                        <label class="bold add-margin-top">Name</label class="bold add-margin-top">
+                        <label class="bold">Name</label>
                         <input type="text" class="form-control add-margin-bottom" id="accountName" placeholder="name">
-                        <label class="bold add-margin-top">Email</label class="bold add-margin-top">
+                        <label class="bold add-margin-top">Email</label>
                         <input type="email" class="form-control add-margin-bottom" id="accountEmail" placeholder="email">
-                        <label class="bold add-margin-top">Phone number</label class="bold add-margin-top">
+                        <label class="bold add-margin-top">Phone number</label>
                         <input type="text" class="form-control add-margin-bottom" id="accountPhone" placeholder="phone number">
-                        <label class="bold add-margin-top">Full address</label class="bold add-margin-top">
+                        <label class="bold add-margin-top">Full address</label>
                         <input type="text" class="form-control add-margin-bottom" id="accountAddress" placeholder="full address">
-                        <label class="bold add-margin-top">Apartment number (if any)</label class="bold add-margin-top">
+                        <label class="bold add-margin-top">Apartment number (if any)</label>
                         <input type="text" class="form-control add-margin-bottom" id="accountAptNumber" placeholder="apartment number">
                         <input type="hidden" class="form-control add-margin-bottom" id="accountID" value="<%= @shopper_id %>">
                         <button type="submit" class="btn btn-primary white height-55" id="updateShopperBtn" onclick="updateShopper('<%= @shopper_id %>')">
@@ -377,4 +377,36 @@ if (type === "checkout") {
             });
         });
     <% end %>
+} else if (type === "shopper-dashboard") {
+    $("#newAlerts")
+    .html(`
+        <%= render partial: "alerts", locals: { alerts: @alerts.last(3) } %>
+    `);
+    $("#prescription-history")
+    .html(`
+        <%= render partial: "prescriptions", locals: { prescriptions: @prescriptions.last(3) } %>
+    `);
+    $("#billing-details")
+    .html(`
+        <%= render partial: "payments", locals: { payments: @payments.last(3) } %>
+    `);
+    $("#my-pharmacies")
+    .html(`
+        <%= render partial: "pharmacies", locals: { pharmacies: @pharmacies } %>
+    `);
+} else if (type === "alerts") {
+    $("#newAlerts")
+    .html(`
+        <%= render partial: "alerts", locals: { alerts: @alerts } %>
+    `);
+} else if (type === "payments") {
+    $("#billing-details")
+    .html(`
+        <%= render partial: "payments", locals: { payments: @payments } %>
+    `);
+} else if (type === "prescriptions") {
+    $("#prescription-history")
+    .html(`
+        <%= render partial: "prescriptions", locals: { prescriptions: @prescriptions } %>
+    `);
 }

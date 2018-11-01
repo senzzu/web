@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181023010712) do
+ActiveRecord::Schema.define(version: 20181031035625) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "first_name",             default: ""
@@ -41,6 +41,20 @@ ActiveRecord::Schema.define(version: 20181023010712) do
     t.boolean  "draft",        default: false
   end
 
+  create_table "billing_histories", force: :cascade do |t|
+    t.string   "amount",          default: ""
+    t.string   "memo",            default: ""
+    t.datetime "paid_on"
+    t.integer  "pharmacy_id"
+    t.string   "paid_to",         default: ""
+    t.string   "payment_method",  default: ""
+    t.string   "last_4",          default: ""
+    t.string   "customer_id",     default: ""
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "prescription_id"
+  end
+
   create_table "carts", force: :cascade do |t|
     t.integer  "item_count",        default: 0
     t.string   "shopper_email",     default: ""
@@ -63,11 +77,38 @@ ActiveRecord::Schema.define(version: 20181023010712) do
     t.string   "item_tax_list",     default: ""
   end
 
+  create_table "coverages", force: :cascade do |t|
+    t.string   "carrier",        default: ""
+    t.string   "member_id",      default: ""
+    t.string   "provider_name",  default: ""
+    t.string   "provider_phone", default: ""
+    t.string   "rx_bin",         default: ""
+    t.string   "rx_group",       default: ""
+    t.float    "generic_copay",  default: 0.0
+    t.float    "brand_copay",    default: 0.0
+    t.float    "otc_copay",      default: 0.0
+    t.integer  "shopper_id"
+    t.string   "customer_id",    default: ""
+    t.boolean  "active",         default: true
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
   create_table "favorites_logs", force: :cascade do |t|
     t.integer  "store_id"
     t.string   "shopper_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "health_alerts", force: :cascade do |t|
+    t.string   "alert_type",  default: ""
+    t.string   "content",     default: ""
+    t.integer  "pharmacy_id"
+    t.boolean  "read",        default: false
+    t.string   "customer_id", default: ""
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "newsletters", force: :cascade do |t|
@@ -129,6 +170,42 @@ ActiveRecord::Schema.define(version: 20181023010712) do
     t.string   "customer_email"
   end
 
+  create_table "patients", force: :cascade do |t|
+    t.string   "first_name",      default: ""
+    t.string   "last_name",       default: ""
+    t.string   "street_address",  default: ""
+    t.string   "town",            default: ""
+    t.string   "state",           default: ""
+    t.string   "zipcode",         default: ""
+    t.string   "phone_number",    default: ""
+    t.string   "profile_picture", default: "https://media.licdn.com/dms/image/C4E03AQGvALsbkwZrEQ/profile-displayphoto-shrink_200_200/0?e=1546473600&v=beta&t=JR-Ju_9KqrtTLPQyzgTSwGMcqTEesE_7mxU4YhRDJC8"
+    t.datetime "created_at",                                                                                                                                                                                null: false
+    t.datetime "updated_at",                                                                                                                                                                                null: false
+  end
+
+  create_table "prescriptions", force: :cascade do |t|
+    t.string   "med_name",     default: ""
+    t.datetime "filled_on"
+    t.string   "prescriber",   default: ""
+    t.string   "filled_by",    default: ""
+    t.integer  "pharmacy_id"
+    t.string   "customer_id",  default: ""
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "url"
+    t.integer  "store_id"
+    t.integer  "refills_left", default: 0
+    t.integer  "patient_id"
+  end
+
+  create_table "refill_requests", force: :cascade do |t|
+    t.integer  "prescription_id"
+    t.integer  "store_id"
+    t.string   "customer_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "registration_requests", force: :cascade do |t|
     t.string   "store_name"
     t.string   "store_address"
@@ -145,13 +222,21 @@ ActiveRecord::Schema.define(version: 20181023010712) do
 
   create_table "shoppers", force: :cascade do |t|
     t.string   "email",                  default: ""
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.datetime "created_at",                                                                                                                                                                                       null: false
+    t.datetime "updated_at",                                                                                                                                                                                       null: false
+    t.string   "encrypted_password",     default: "",                                                                                                                                                              null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.boolean  "guest",                  default: false
+    t.string   "first_name",             default: ""
+    t.string   "last_name",              default: ""
+    t.string   "street_address",         default: ""
+    t.string   "town",                   default: ""
+    t.string   "state",                  default: ""
+    t.string   "zipcode",                default: ""
+    t.string   "phone_number",           default: ""
+    t.string   "profile_picture",        default: "https://media.licdn.com/dms/image/C4E03AQGvALsbkwZrEQ/profile-displayphoto-shrink_200_200/0?e=1546473600&v=beta&t=JR-Ju_9KqrtTLPQyzgTSwGMcqTEesE_7mxU4YhRDJC8"
     t.index ["email"], name: "index_shoppers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_shoppers_on_reset_password_token", unique: true
   end

@@ -1,0 +1,46 @@
+<style>
+    footer {
+        display: none;
+    }
+    
+    #main-body {
+        padding-top: 40px;
+    }
+</style>
+
+<div class="container">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12 text-left" style="margin-bottom: 20px;">
+            <a class="btn btn-primary box-shadow white"
+                onclick="window.location.href='/shoppers/<%= params[:shopper_id] %>/dashboard'">
+                <i class="fa fa-angle-left bold"></i> Dashboard
+            </a>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 20px;">
+            <div class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header"
+                    style="border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                    <h6 class="white float-left">
+                        <i class="fa fa-bell-o"></i> Alerts
+                    </h6>
+                </div>
+                <div class="card-body" id="newAlerts">No new alerts</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    var data = {
+        "type": "alerts",
+        "shopperID": "<%= params[:shopper_id] %>"
+    };
+    
+    readShopperDataFromFirestore(data, "newAlerts");
+    
+    function alertRead(alertID) {
+        $.post('/alert_read', { id: alertID, shopper_id: "<%= params[:shopper_id] %>" });
+    }
+</script>

@@ -1,0 +1,267 @@
+var page = "<%= @page %>";
+
+if (page === "") {
+    $('#main-body-container').html(`
+        <section id="pharmacy-dashboard">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card box-shadow no-border" style="border-radius: 5px;">
+                            <div class="card-header">
+                                <h6 class="white">Prescriptions</h6>
+                            </div>
+                            <div class="card-body fixed-card-padding text-center">
+                                <p style="font-size: 38px;" class="theme-color">
+                                    <%= @prescriptions.count %>
+                                </p>
+                                <p style="font-size: 14px">new prescriptions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card box-shadow no-border" style="border-radius: 5px;">
+                            <div class="card-header">
+                                <h6 class="white">Refills</h6>
+                            </div>
+                            <div class="card-body fixed-card-padding text-center">
+                                <p style="font-size: 38px;" class="theme-color">
+                                    <%= @refills.count %>
+                                </p>
+                                <p style="font-size: 14px">new refills</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card box-shadow no-border" style="border-radius: 5px;">
+                            <div class="card-header">
+                                <h6 class="white">Patients</h6>
+                            </div>
+                            <div class="card-body fixed-card-padding text-center">
+                                <p style="font-size: 38px;" class="theme-color">
+                                    <%= @patients.count %>
+                                </p>
+                                <p style="font-size: 14px">active patients</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card box-shadow no-border" style="border-radius: 5px;">
+                            <div class="card-header">
+                                <h6 class="white">orders</h6>
+                            </div>
+                            <div class="card-body fixed-card-padding text-center">
+                                <p style="font-size: 38px;" class="theme-color">
+                                    <%= @orders.count %>
+                                </p>
+                                <p style="font-size: 14px">new orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card box-shadow no-border" style="border-radius: 5px; margin-top: 15px;">
+                            <div class="card-header">
+                                <h6 class="white">All prescriptions</h6>
+                            </div>
+                            <div class="card-body fixed-card-padding">
+                                <%= render partial: 'prescriptions', locals: { prescriptions: @prescriptions } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card box-shadow no-border" style="border-radius: 5px; margin-top: 15px;">
+                            <div class="card-header">
+                                <h6 class="white">Prescriptions to date</h6>
+                            </div>
+                            <div class="card-body fixed-card-padding text-center">
+                                <%= line_chart prescriptions %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `);
+} else if (page === "patient") {
+    $('#main-body-container').html(`
+        <div class="card no-border box-shadow">
+            <div class="card-header">
+                <h6>Patients</h6>
+            </div>
+            <div class="card-body">
+                <% @patients.each do |pt| %>
+                    <div class="row font-14">
+                        <div class="col-md-2">
+                            <span class="font-14 bold theme-color"><%= pt.full_name %></span>
+                        </div>
+                        <div class="col-md-2 font-14">
+                            Coverage: <span class="font-14 theme-color"><%= "active" %></span>
+                        </div>
+                        <div class="col-md-2 font-14">
+                            Prescriptions: <span class="font-14 theme-color">3</span>
+                        </div>
+                        <div class="col-md-3 font-14">
+                            Last refill on:
+                            <span class="font-14 theme-color">
+                                <%= select_prescription.filled_on.strftime('%m/%d/%y at %l:%M%p') %>
+                            </span>
+                        </div>
+                        <div class="col-md-2 offset-md-1">
+                            <div class="dropdown">
+                                <a class="btn btn-primary font-14 white" id="show-patient-<%= pt.id %>" onclick="fetchPage(this, 'show-patient', <%= pt.id %>)">
+                                    View profile <i class="fa fa-user-circle-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <hr style="margin-bottom: 10px; margin-top: 10px;">
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    `);
+} else if (page === "alerts") {
+    
+} else if (page === "show-patient") {
+    <% if @patient %>
+        $('#main-body-container').html(`
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card box-shadow no-border" style="height: 100%;">
+                        <div class="card-header">
+                            <h6>Patient details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img src="<%= @patient.profile_picture %>"
+                                        height="100" style="border-radius: 5px;"
+                                        class="box-shadow">
+                                </div>
+                                <div class="col-md-9">
+                                    <h6><%= @patient.full_name %></h6>
+                                </div>
+                            </div>
+                            <hr style="margin-bottom: 15px; margin-top: 15px;">
+                            <a class="btn btn-primary box-shadow white">
+                                Send alert <i class="fa fa-bell-o"></i>
+                            </a>
+                            <a class="btn btn-secondary box-shadow white">
+                                Send text message <i class="fa fa-envelope-o"></i>
+                            </a>
+                            <a class="btn btn-success box-shadow white">
+                                Contact Primary Care Doctor <i class="fa fa-user-md"></i>
+                            </a>
+                            <a class="btn btn-danger box-shadow white">
+                                Deactivate <i class="fa fa-times-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card box-shadow no-border">
+                        <div class="card-header">
+                            <h6>Insurance details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" id="coverageDetailsLines">
+                                <div class="col-md-12">
+                                    <p class="font-16">
+                                        Carrier: <span class="theme-blue bold"><%= @coverage.carrier %></span>
+                                    </p>
+                                </div>
+                                <div class="col-md-12">
+                                    <p class="font-15">
+                                        Member ID: <span class="theme-green"><%= @coverage.member_id %></span>
+                                    </p>
+                                </div>
+                                <div style="margin-top: 20px; margin-bottom: 20px;">
+                                    <div class="col-md-6 float-left">
+                                        <p class="font-14">
+                                            Provider name: <span class="theme-color"><%= @coverage.provider_name %></span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 float-right">
+                                        <p class="font-14">
+                                            Provider phone: <span class="theme-color"><%= @coverage.provider_phone %></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div style="margin-top: 20px;">
+                                    <div class="col-md-12 float-left">
+                                        <p class="font-13">
+                                            RxBin: <span class="theme-color" style="margin-right: 5px;"><%= @coverage.rx_bin %></span>
+                                            RxGrp: <span class="theme-color"><%= @coverage.rx_group %></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card no-border box-shadow" style="margin-top: 15px;">
+                <div class="card-header">
+                    <h6>Prescription History</h6>
+                </div>
+                <div class="card-body">
+                    <% @prescriptions.each do |pt| %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <span class="bold theme-blue"><%= pt.med_name %></span>
+                            </div>
+                            <div class="col-md-3">
+                                Last refill: <span class="theme-color"><%= pt.filled_on.nil? ? "none" : pt.filled_on.strftime('%m/%d/%y') %></span>
+                            </div>
+                            <div class="col-md-3">
+                                Next refill: <span class="theme-color"><%= pt.filled_on.nil? ? "TBD" : month_from(pt.filled_on).strftime('%m/%d/%y') %></span>
+                            </div>
+                            <div class="col-md-3">
+                                Refills left: <span class="theme-color"><%= pt.refills_left %></span>
+                            </div>
+                            <div class="col-md-12">
+                                <hr style="margin-bottom: 10px; margin-top: 10px;">
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        `);
+    <% end %>
+} else if (page === "refills") {
+    <% if @refills %>
+        $('#main-body-container').html(`
+            <div class="card no-border box-shadow" style="margin-top: 15px;">
+                <div class="card-header">
+                    <h6>New requests</h6>
+                </div>
+                <div class="card-body">
+                    <% @prescriptions.each do |pt| %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <span class="bold theme-blue"><%= pt.med_name %></span>
+                            </div>
+                            <div class="col-md-3">
+                                Last refill: <span class="theme-color"><%= pt.filled_on.nil? ? "none" : pt.filled_on.strftime('%m/%d/%y') %></span>
+                            </div>
+                            <div class="col-md-3">
+                                Refills left: <span class="theme-color"><%= pt.refills_left %></span>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-success">
+                                    Process <i class="fa fa-check-circle-o"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-12">
+                                <hr style="margin-bottom: 10px; margin-top: 10px;">
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        `);
+    <% end %>
+}

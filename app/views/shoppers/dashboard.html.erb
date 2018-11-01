@@ -1,0 +1,241 @@
+<style>
+    footer {
+        display: none;
+    }
+    
+    #main-body {
+        padding-top: 20px;
+    }
+</style>
+
+<div class="modal" id="new-prescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1051 !important;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content box-shadow">
+            <div class="modal-body" id="order-in-process">
+                <div class="text-center col-md-12">
+                    <span>
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw theme-color"
+                            style="font-size: 50px;">
+                        </i>
+                    </span><br />
+                    <p class="add-margin-top">Processing...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add-pharmacy" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1051 !important;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="authenticationModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add a pharmacy</h5>
+                <a class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+                </a>
+            </div>
+            <div class="modal-body" id="authenticationModalBody">
+                <form action="/search" data-remote="true" method="get" id="storeSearchForm" style="margin-top: 20px;">
+                    <div class="input-group mb-3" style="margin-bottom: 0 !important;">
+                        <div class="input-group-prepend">
+                            <button class="input-group-text prepend-group cursor-pointer" id="basic-addon1"
+                                style="border: 0.5px solid #e7e7e9 !important;">
+                                <i class="fa fa-search search-input-icon"></i>
+                            </button>
+                        </div>
+                        <input type="hidden" id="search-type" name="search_type" value="address">
+                        <input class="form-control no-box-shadow store-search"
+                            id="store-search" name="q" placeholder="Enter your address..." autocomplete="off" onfocus="showSuggestionBox();">
+                        <div class="dropdown">
+                            <a class="btn btn-primary white set-search-type"
+                                style="height: 65px; border-top-left-radius: 0; border-bottom-left-radius: 0; padding-top: 20px;"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-angle-down bold"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="margin-left: -123px;">
+                                <a class="background-transparent dropdown-item cursor-pointer" onclick="setSearchType('address')">
+                                    By address
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="background-transparent dropdown-item cursor-pointer" onclick="setSearchType('store')">
+                                    By store name
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary height-50 box-shadow btn-block" align="center"
+                        type="submit" id="submitStoreSearch" style="">
+                        Search
+                    </button>
+                </form>
+                <div id="add-pharmacy-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-12" style="margin-bottom: 20px;">
+            <div class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header"
+                    style="border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                    <h6 class="white float-left">
+                        <i class="fa fa-bell-o"></i> Alerts
+                    </h6>
+                    <button class="btn btn-primary box-shadow float-right white" style="border-radius: 5px;"
+                        data-toggle="modal" data-target="#new-prescription"
+                        onclick="window.location.href='/shoppers/<%= params[:shopper_id] %>/dashboard/alerts'">
+                        View all
+                    </button>
+                </div>
+                <div class="card-body" id="newAlerts">No new alerts</div>
+            </div>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 20px;">
+            <div class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header"
+                    style="border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                    <h6 class="white float-left">
+                        <i class="fa fa-file-text-o"></i> Prescription history
+                    </h6>
+                    <button class="btn btn-primary box-shadow float-right white" style="border-radius: 5px;"
+                        data-toggle="modal" data-target="#new-prescription"
+                        onclick="window.location.href='/shoppers/<%= params[:shopper_id] %>/dashboard/prescriptions'">
+                        View all
+                    </button>
+                </div>
+                <div class="card-body" id="prescription-history">
+                    No prescription history
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 20px;">
+            <div class="card box-shadow no-border"
+                    style="border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                <div class="card-header">
+                    <h6 class="white float-left">
+                        <i class="fa fa-credit-card"></i> Billing details
+                    </h6>
+                    <button class="btn btn-primary box-shadow float-right white" style="border-radius: 5px;"
+                        data-toggle="modal" data-target="#new-prescription"
+                        onclick="window.location.href='/shoppers/<%= params[:shopper_id] %>/dashboard/billing'">
+                        View all
+                    </button>
+                </div>
+                <div class="card-body" id="billing-details">
+                    No billing details available
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card box-shadow no-border" style="border-radius: 5px;">
+                <div class="card-header"
+                    style="border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                    <h6 class="white float-left">
+                        <i class="fa fa-hospital-o"></i> Your pharmacies
+                    </h6>
+                    <button class="btn btn-primary box-shadow float-right white" style="border-radius: 5px;"
+                        data-toggle="modal" data-target="#add-pharmacy">
+                        Add new
+                    </button>
+                </div>
+                <div class="card-body" id="my-pharmacies">No pharmacy added yet</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    var data = {
+        "type": "shopper-dashboard",
+        "shopperID": "<%= params[:shopper_id] %>"
+    };
+    
+    readShopperDataFromFirestore(data, "newAlerts", "prescription-history", "billing-details", "my-pharmacies");
+    
+    $('#storeSearchForm').on('submit', function() {
+        
+    });
+    
+    // For prescriptions 
+    function refillRequest(prescription, pharmacyID, pharmacyName) {
+        console.log('refill-request-modal-body-' + prescription.toString());
+        $('#refill-request-modal-body-' + prescription.toString())
+        .html(`
+            <p class="bold">Send refill request to ` + pharmacyName + `?</p>
+            <div style="margin-top: 20px;" class="text-center">
+                <a class="btn btn-primary white" onclick="sendRefillRequest(` + prescription.toString() + ", '" + pharmacyID + "'" + `)">
+                    Confirm <i class="fa fa-check-circle"></i>
+                </a>
+                <a class="btn btn-danger white" onclick="cancelRefillRequest(` + prescription.toString() + ", '" + pharmacyID + "', " + "'" + pharmacyName + "'" + `)">
+                    Cancel <i class="fa fa-times-circle"></i>
+                </a>
+            </div>
+        `);
+    }
+    
+    function cancelRefillRequest(prescription, pharmacyID, pharmacyName) {
+        $('#refill-request-modal-body-' + prescription.toString())
+        .html(`
+            <p class="bold">
+                Send refill request to:
+            </p>
+            <div class="dropdown">
+                <a class="btn btn-success white submit-btn" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    style="margin-top: 20px;">
+                    Choose a pharmacy <i class="fa fa-angle-down"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <% @pharmacies.each do |ph| %>
+                        <a class="dropdown-item category cursor-pointer" onclick="refillRequest(` + prescription.toString() + ", '" + pharmacyID + "', " + "'" + pharmacyName + "'" + `)">
+                            <%= ph.name %>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                    <% end %>
+                </div>
+            </div>
+        `);
+    }
+    
+    function sendRefillRequest(prescription, pharmacyID) {
+        $('#refill-request-modal-body-' + prescription.toString())
+        .html(`
+            <div style="padding: 30px 5px;" class="text-center">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+                style="font-size: 36px;"></i><br />
+                <p class="font-16">Submitting your request...</p>
+            </div>
+        `);
+        $.post('/send_refill_request', { prescription_id: prescription, pharmacy_id: pharmacyID, shopper_id: "<%= params[:shopper_id] %>" })
+        .done((done) => {
+            $('#refill-request-modal-body-' + prescription.toString())
+            .html(`
+                <div style="padding: 20px 5px;" class="text-center">
+                    <i class="fa fa-check-circle-o theme-green" 
+                    style="font-size: 40px;"></i><br />
+                    <p class="font-16">Your request has been sent!</p>
+                </div>
+            `);
+            toastr.success('Your prescription has been sent!');
+        }).fail((fail) => {
+            $('#refill-request-modal-body-' + prescription.toString())
+            .html(`
+                <div style="padding: 20px 5px;" class="text-center">
+                    <i class="fa fa-times-circle-o theme-red" 
+                    style="font-size: 40px;"></i><br />
+                    <p class="font-16">Your request could not be sent. Try reloading the page.</p>
+                </div>
+            `);
+        });
+    }
+    
+    // For alerts
+    function alertRead(alertID) {
+        $.post('/alert_read', { id: alertID, shopper_id: "<%= params[:shopper_id] %>" });
+    }
+</script>

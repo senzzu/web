@@ -9,6 +9,7 @@
 
 
 window.onload = e => {
+    // if (document.querySelector('#body').text().trim() == )
     $.get('/uninitialize_firebase');
     $.get('/initialize_cart');
     $.get('/firebase_listener');
@@ -86,7 +87,7 @@ function removeDataFromFirestore(data) {
 }
 
 /// Read data from firestore
-function readShopperDataFromFirestore(data, elem=null) {
+function readShopperDataFromFirestore(data, elem1=null, elem2=null, elem3=null, elem4=null) {
     // Load shopper account details
     $('#accountDetailsLines').html(`
         <div class="text-center col-md-12" id="loadingAccountDetails">
@@ -99,7 +100,40 @@ function readShopperDataFromFirestore(data, elem=null) {
         </div>
     `);
     
-    $('#' + elem).html(`
+    $('#' + elem1).html(`
+        <div class="text-center col-md-12" id="loadingAccountDetails">
+            <span>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw theme-color"
+                    style="font-size: 50px;">
+                </i>
+            </span><br />
+            <p>Loading details</p>
+        </div>
+    `);
+    
+    $('#' + elem2).html(`
+        <div class="text-center col-md-12" id="loadingAccountDetails">
+            <span>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw theme-color"
+                    style="font-size: 50px;">
+                </i>
+            </span><br />
+            <p>Loading details</p>
+        </div>
+    `);
+    
+    $('#' + elem3).html(`
+        <div class="text-center col-md-12" id="loadingAccountDetails">
+            <span>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw theme-color"
+                    style="font-size: 50px;">
+                </i>
+            </span><br />
+            <p>Loading details</p>
+        </div>
+    `);
+    
+    $('#' + elem4).html(`
         <div class="text-center col-md-12" id="loadingAccountDetails">
             <span>
                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw theme-color"
@@ -331,8 +365,6 @@ function toggleAuth(state) {
                 <form onsubmit="signupShopper()" id="shopperSignupForm" data-remote="true">
                     <input type="email" class="form-control add-margin-bottom" placeholder="email" id="signupEmail" required="true">
                     <input type="password" class="form-control add-margin-bottom" placeholder="password" id="signupPassword" required="true">
-                    <input type="text" class="form-control add-margin-bottom" placeholder="Phone number" id="signupPhone" required="true">
-                    <input type="text" class="form-control add-margin-bottom" placeholder="Full address" id="signupAddress" required="true">
                     <button type="submit" class="btn btn-primary btn-block add-margin-bottom height-55" id="signupBtn" onclick="signupShopper()">
                         Signup
                     </button>
@@ -380,31 +412,32 @@ $('#shopperSignupForm').on('submit', function (event) {
 function signupShopper() {
     const shopperEmail = document.querySelector('#signupEmail').value;
     const shopperPassword = document.querySelector('#signupPassword').value;
-    const shopperAddress = document.querySelector('#signupAddress').value;
-    const shopperPhone = document.querySelector('#signupPhone').value;
-    if (!shopperAddress || !shopperPhone) {
-        $('.alert').remove();
+    // const shopperAddress = document.querySelector('#signupAddress').value;
+    // const shopperPhone = document.querySelector('#signupPhone').value;
+    // if (!shopperAddress || !shopperPhone) {
+    //     $('.alert').remove();
         
-        $('#authenticationModalBody').prepend(`
-            <div class="alert alert-danger" role="alert">
-                <h6 class="alert-heading">Please provide the missing information</h6>
-            </div>
-        `);
-        return;
-    }
+    //     $('#authenticationModalBody').prepend(`
+    //         <div class="alert alert-danger" role="alert">
+    //             <h6 class="alert-heading">Please provide the missing information</h6>
+    //         </div>
+    //     `);
+    //     return;
+    // }
     $('#signupBtn').css('opacity', '0.7').html('Creating your account...');
     
     firebase.auth().createUserWithEmailAndPassword(shopperEmail, shopperPassword)
     .then((resp) => {
         var data = {
             "type": "update-shopper",
-            "shopperEmail": shopperEmail,
-            "shopperAddress": shopperAddress,
-            "shopperPhone": shopperPhone,
-            "shopperUID": resp.user.uid
+            "shopperEmail": shopperEmail
+            // "shopperAddress": shopperAddress,
+            // "shopperPhone": shopperPhone,
+            // "shopperUID": resp.user.uid
         };
         
         addShopperDataToFirestore(data);
+        window.location.href="shoppers/" + resp.user.uid + "/092398r2q3010jj0jw021jd0q113/account/settings";
     })
     .catch(function(error) {
         $('#signupBtn').css('opacity', '1').html('Sign up');
@@ -437,6 +470,9 @@ function loginShopper() {
     $('#loginBtn').css('opacity', '0.7').html('Logging you in...');
     
     firebase.auth().signInWithEmailAndPassword(shopperEmail, shopperPassword)
+    .then((resp) => {
+        window.location.replace("/shoppers/" + resp.user.uid + "/dashboard");
+    })
     .catch(function(error) {
         $('#loginBtn').css('opacity', '1').html('Log in');
         $('.alert').remove();

@@ -1,16 +1,34 @@
 module ApplicationHelper
     
+    def url
+        request.original_url
+    end
+    
     def navbar
         if current_store
-            return 'layouts/store_navbar'
+            # 'layouts/store_navbar'
+            'layouts/pharmacy_layout'
         elsif current_admin
-            return 'layouts/admin_navbar'
-        end
-        if request.original_url.include?('/blog')
-            'layouts/blog_navbar'
+            'layouts/admin_navbar'
         else
-            'layouts/main_navbar'
+            if request.original_url.include?('/blog')
+                'layouts/blog_navbar'
+            else
+                'layouts/main_navbar'
+            end
         end
+    end
+    
+    def check_active(page)
+        if url.include?(page)
+            'active'
+        end
+        # request.original_url == root_url ? 'active' : ''
+    end
+    
+    def select_prescription
+        count = Prescription.all.map(&:id)
+        Prescription.find_by(id: count[rand(0..count.length-1)])
     end
     
     def checkout_link
@@ -66,6 +84,10 @@ module ApplicationHelper
     def featured_article
         ## Placeholder until we figure out how to select a feature article
         Article.last
+    end
+    
+    def month_from(date)
+        date + 30.days
     end
     
 end

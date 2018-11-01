@@ -161,4 +161,8 @@ module StoresHelper
         map
     end
     
+    def prescriptions
+        Prescription.all.group_by_day(:created_at).count
+    end
+    
 end

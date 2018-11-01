@@ -17,10 +17,21 @@
  *= require bootstrap-wysihtml5
  *= require social-share-button
  */
+/*.navbar {*/
+/*    border-bottom: 1px solid #eee;*/
+/*    background: #fff !important;*/
+/*    padding: 16px;*/
+/*}*/
+
 .navbar {
-    border-bottom: 1px solid #eee;
-    background: #fff !important;
-    padding: 16px;
+    /*background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/navbar_banner.png') !important;*/
+    background-color: #33a3ad !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .navbar-brand {
@@ -85,6 +96,10 @@
 
 .font-17 {
     font-size: 17px;
+}
+
+.font-16 {
+    font-size: 16px !important;
 }
 
 .font-15 {
@@ -157,17 +172,17 @@ div.how-to > i {
 }
 
 #body {
-    padding: 100px 0 0 0;
-    margin: 5px 0 0 0;
-    font-family: 'Montserrat', sans-serif !important;
+    /*padding: 100px 0 0 0;*/
+    /*margin: 5px 0 0 0;*/
+    /*font-family: 'Ubuntu', sans-serif !important;*/
     z-index: 1;
 }
 
-#accountDetails {
-    border: 0.5px solid #e7e7e9;
-    border-radius: 2px;
-    padding: 15px;
-}
+/*#accountDetails {*/
+/*    border: 0.5px solid #e7e7e9;*/
+/*    border-radius: 2px;*/
+/*    padding: 15px;*/
+/*}*/
 
 #suggestionBoxContainer {
     height: 200px;
@@ -301,7 +316,7 @@ hr, p {
 
 button, .btn {
     color: #fff;
-    border-radius: 2px;
+    border-radius: 5px;
 }
 
 .theme-color {
@@ -314,6 +329,15 @@ button, .btn {
 
 .theme-border-bottom {
     border-bottom: 1px solid #F27649 !important;
+}
+
+.card, .modal-content {
+    border-radius: 5px !important;
+}
+
+.card-header {
+    border-top-right-radius: 5px !important;
+    border-top-left-radius: 5px !important;
 }
 
 button {
@@ -368,8 +392,8 @@ input.btn:hover {
 
 .card-header {
     font-size: 16px;
-    background-color: transparent;
-    color: #F27649;
+    background-color: #33a3ad !important;
+    color: #fff !important;
 }
 
 .new-order-card-header {
@@ -381,12 +405,14 @@ input.btn:hover {
 }
 
 .modal-content {
-    border-color: #F27649 !important;
+    border: none !important;
+    border-color: #33a3ad !important;
 }
 
 .order-card > .card-header {
     color: #fff;
 }
+
 
 canvas {
     height: 200px;
@@ -395,9 +421,10 @@ canvas {
 
 .modal-header {
     border: none;
-    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     font-size: 16px;
-    background-color: #F27649;
+    background-color: #33a3ad !important;
     color: #fff;
 }
 
@@ -482,6 +509,46 @@ canvas {
 
 #socialTags {
     text-align: right;
+}
+
+#navigation-block {
+    height: 100%;
+    position: fixed;
+    padding: 0 0 20px 0;
+    background-color: #33a3ad;
+    box-shadow: 3px 6px 12px 3px rgba(50,50,70,.08);
+}
+
+.navigation-link {
+    margin-bottom: 10px;
+    width: 80%;
+    padding: 20px;
+    margin-left: 25px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.navigation-link:hover, .active {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 3px 6px 12px 3px rgba(50,50,70,.08);
+    color: #F27649;
+}
+
+#store-name {
+    padding: 20px;
+    background-color: #237279;
+    color: #fff;
+    font-weight: 900;
+}
+
+.fixed-card-padding {
+    padding: 5px 15px 15px 15px !important;
+    margin: 0;
+}
+
+.navigation-block-bottom {
+    /*border-bottom: 1px solid #1e6167;*/
 }
 
 @media only screen and (max-device-width: 767.99px) {

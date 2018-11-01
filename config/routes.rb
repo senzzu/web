@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     get 'store/retrieve-password', to: 'devise/passwords#new'
   end
   authenticated :store do
-    root 'stores#dashboard', as: :authenticated_store_root
+    root 'stores#pharmacy_dashboard', as: :authenticated_store_root
   end
   
   ## Admin Devise routes
@@ -30,6 +30,14 @@ Rails.application.routes.draw do
   ## Shopper routes
   get '/firebase_authentication', to: 'shoppers#firebase_authentication'
   get '/shoppers/:shopper_id/:shopper_uid/account/settings', to: 'shoppers#account_settings'
+  get '/shoppers/:shopper_id/dashboard', to: 'shoppers#dashboard'
+  get '/shoppers/:shopper_id/dashboard/alerts', to: 'shoppers#alerts'
+  get '/shoppers/:shopper_id/dashboard/prescriptions', to: 'shoppers#prescriptions'
+  get '/shoppers/:shopper_id/dashboard/billing', to: 'shoppers#payments'
+  get '/shoppers/:shopper_id/:token/dashboard', to: 'shoppers#dashboard'
+  get '/shoppers/:shopper_id/:token/dashboard/alerts', to: 'shoppers#alerts'
+  get '/shoppers/:shopper_id/:token/dashboard/prescriptions', to: 'shoppers#prescriptions'
+  get '/shoppers/:shopper_id/:token/dashboard/billing', to: 'shoppers#payments'
   get '/read_shopper_data_from_firestore', to: 'shoppers#read_data_from_firestore'
   get '/add_shopper_data_to_firestore', to: 'shoppers#add_data_to_firestore'
   get '/shoppers/:shopper_id/:shopper_uid/order-history', to: 'shoppers#order_history'
@@ -39,6 +47,8 @@ Rails.application.routes.draw do
   get '/stores/:id/:slug', to: 'stores#show'
   post '/special_orders', to: 'shoppers#create_special_order'
   get '/clear_cart', to: 'carts#clear_cart'
+  post '/alert_read', to: 'shoppers#alert_read'
+  post '/process_insurance_image', to: 'shoppers#process_insurance_image'
   
   ## Global routes
   get '/uninitialize_firebase', to: 'main#uninitialize_firebase'
@@ -80,7 +90,7 @@ Rails.application.routes.draw do
   patch '/admin', to: 'admins#update'
   
   ## Stores routes
-  get '/dashboard', to: 'stores#dashboard'
+  get '/dashboard', to: 'stores#pharmacy_dashboard'
   get '/edit/profile', to: 'stores#edit_profile'
   get '/edit/hours', to: 'stores#edit_hours'
   get '/update_sessions_count', to: 'stores#update_sessions_count'
@@ -109,6 +119,11 @@ Rails.application.routes.draw do
   get '/mark_fulfilled', to: 'stores#mark_fulfilled'
   get '/update_unprocessed_orders_count', to: 'stores#update_unprocessed_orders_count'
   get '/update_item_requests_count', to: 'stores#update_item_requests_count'
+  post '/send_prescription_to_pharmacy', to: 'stores#new_prescription'
+  post '/send_refill_request', to: 'stores#refill_request'
+  get '/fetch_page', to: 'stores#fetch_page'
+  get '/patients', to: 'stores#patients'
+  get '/show-patient', to: 'stores#show_patient'
   
   ## Callbacks
   post '/account', to: 'main#account'
@@ -117,5 +132,5 @@ Rails.application.routes.draw do
   resources :articles
   resources :admin
   
-  root 'main#index'
+  root 'main#home'
 end

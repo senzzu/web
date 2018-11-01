@@ -1,0 +1,54 @@
+<% prescriptions.each do |pt| %>
+    <div class="modal" id="request-refill-modal-<%= pt.id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content box-shadow" style="margin-top: 100px;">
+                <div class="modal-body text-center" id="refill-request-modal-body-<%= pt.id.to_s %>">
+                    <p class="bold">
+                        Send refill request to:
+                    </p>
+                    <div class="dropdown">
+                        <a class="btn btn-success white submit-btn" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="margin-top: 20px;">
+                            Choose a pharmacy <i class="fa fa-angle-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <% @pharmacies.each do |ph| %>
+                                <a class="dropdown-item category cursor-pointer" onclick="refillRequest(<%= pt.id %>, <%= ph.id %>, '<%= ph.name %>')">
+                                    <%= ph.name %>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span class="bold theme-blue"><%= pt.med_name %></span>
+        </div>
+        <div class="col-md-2">
+            Last fill: <span class="theme-color"><%= pt.filled_on.nil? ? "none" : pt.filled_on.strftime('%m/%d/%y') %></span>
+        </div>
+        <div class="col-md-3">
+            Filled by <span class="bold"><%= pt.filled_by.empty? ? "N/A" : pt.filled_by %></span>
+        </div>
+        <div class="col-md-2">
+            Next refill: <span class="theme-color"><%= pt.filled_on.nil? ? "TBD" : month_from(pt.filled_on).strftime('%m/%d/%y') %></span>
+        </div>
+        <div class="col-md-2">
+            Refills left: <span class="theme-color"><%= pt.refills_left %></span>
+        </div>
+        <div class="col-md-1">
+            <span class="badge badge-success white cursor-pointer"
+                style="padding: 5px;" data-toggle="modal" data-target="#request-refill-modal-<%= pt.id.to_s %>">
+                refill <i class="fa fa-refresh"></i>
+            </span>
+        </div>
+        <div class="col-md-12">
+            <hr style="margin-bottom: 10px; margin-top: 10px;">
+        </div>
+    </div>
+<% end %>

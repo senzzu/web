@@ -1,0 +1,5 @@
+console.log('here');
+$("#prescription-history")
+.html(`
+    <%= render partial: "shoppers/prescriptions", locals: { prescriptions: @prescriptions } %>
+`);

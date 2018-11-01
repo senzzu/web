@@ -1,12 +1,44 @@
 class StoresController < ApplicationController
-    before_action :set_store, except: [:show]
-    before_action :authenticate_store!, except: [:show]
-    before_action :own_store, except: [:add_to_queue, :mark_fulfilled, :deny_request, :alert_customer]
+    before_action :set_store, except: [:show, :new_prescription,:refill_request]
+    before_action :authenticate_store!, except: [:show, :new_prescription, :refill_request]
+    before_action :own_store, except: [:add_to_queue, :mark_fulfilled, :deny_request,
+                                        :alert_customer, :new_prescription, :refill_request]
     
     def go_live
         @store = current_store
         return if @store.nil?
         @store.update(live: true)
+        render :layout => false
+    end
+    
+    def pharmacy_dashboard
+        @prescriptions = Prescription.all
+        @alerts = HealthAlert.all
+        @patients = Shopper.all
+        @refills = RefillRequest.all
+        @orders = Order.all
+        @patients = Patient.all
+    end
+    
+    def patients
+        @patients = Patient.all
+    end
+    
+    def show_patient
+        @patient = Patient.first ## gotta fix that
+        @coverage = Coverage.last ## also gotta fix that
+        @prescriptions = Prescription.all ## yet another one
+    end
+    
+    def fetch_page
+        @page = params[:page]
+        @prescriptions = Prescription.all
+        @alerts = HealthAlert.all
+        @patients = Patient.all
+        @refills = RefillRequest.all
+        @orders = Order.all
+        @patient = Patient.find_by(id: params[:patient_id]) if !params[:patient_id].nil?
+        @coverage = Coverage.last
         render :layout => false
     end
     
@@ -45,14 +77,6 @@ class StoresController < ApplicationController
             @error = e
             render 'stripe_account_error', :layout => false
         end
-    end
-    
-    def dashboard
-        
-    end
-    
-    def inventory
-        
     end
     
     def order_history
@@ -173,7 +197,27 @@ class StoresController < ApplicationController
         render :layout => false 
     end
     
-    def add_new_item
+    def new_prescription
+        id = params[:id]
+        url = params[:url]
+        shopper_id = params[:customer_id]
+        Prescription.create(med_name: 'Albuterol', filled_by: 'Janet Jackson', pharmacy_id: id, url: url, customer_id: shopper_id, refills_left: 5)
+        @prescriptions = Prescription.where(customer_id: shopper_id).reverse ## gotta specify which pharmacies
+        @pharmacies = Store.all
+        render 'shoppers/new_prescription', :layout => false
+    end
+    
+    def refill_request
+        prescription = params[:prescription_id]
+        pharmacy = params[:pharmacy_id]
+        shopper_id = params[:shopper_id]
+        @pt = Prescription.find_by(id: prescription)
+        @pt.update(refills_left: (@pt.refills_left - 1), filled_on: Time.zone.now)
+        RefillRequest.create(prescription_id: prescription, store_id: pharmacy)
+        @prescriptions = Prescription.where(customer_id: shopper_id).reverse ## gotta specify which pharmacies
+        @requests = RefillRequest.where(customer_id: shopper_id).reverse ## gotta specify which pharmacies
+        @pharmacies = Store.all
+        render 'shoppers/refill_request', :layout => false
     end
     
     def earnings
@@ -214,18 +258,6 @@ class StoresController < ApplicationController
     def show
         @store = Store.find(params[:id])
         @order = SpecialOrder.new
-    end
-    
-    def edit_profile
-        
-    end
-    
-    def edit_banner
-        
-    end
-    
-    def edit_hours
-        
     end
     
     def update

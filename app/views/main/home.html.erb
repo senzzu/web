@@ -1,0 +1,190 @@
+<style>
+    .navbar {
+        /*background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/navbar_banner.png') !important;*/
+        background-color: #33a3ad !important;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-bottom: none;
+    }
+    
+    body, html {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100% !important;
+    }
+</style>
+
+<section id="banner"
+    style="height: 100%; min-height: 100%; background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/navbar_banner.png');
+    background-size: cover; background-repeat: no-repeat;
+    background-position: center; width: 100%;">
+
+    <div class="container">
+        <section id="search" class="row" style="padding-top: 60px; margin-bottom: 80px;">
+            <div class="col-md-6 add-padding-bottom" style="">
+                <!--<div align="center">-->
+                <!--    <img src="https://s3.us-east-2.amazonaws.com/senzzu/pill_bottle_icon.png"-->
+                <!--        height="150" style="vertical-align: text-top !important;">-->
+                <!--</div>-->
+                <h5 class="white" id="banner-text">
+                    A better pharmacy experience at your fingertips.
+                </h5>
+                <form action="/search" method="get" id="storeSearchForm" style="margin-top: 20px;">
+                    <div class="input-group mb-3" style="margin-bottom: 0 !important;">
+                        <div class="input-group-prepend">
+                            <button class="input-group-text prepend-group cursor-pointer border-white" id="basic-addon1">
+                                <i class="fa fa-search search-input-icon"></i>
+                            </button>
+                        </div>
+                        <input type="hidden" id="search-type" name="search_type" value="address">
+                        <input class="form-control no-box-shadow store-search border-white"
+                            id="store-search" name="q" placeholder="Enter your address..." autocomplete="off" onfocus="showSuggestionBox();">
+                        <div class="dropdown">
+                            <a class="btn btn-primary white set-search-type"
+                                style="height: 65px; border-top-left-radius: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 5px !important;
+                                padding-top: 20px;"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-angle-down bold"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="margin-left: -123px;">
+                                <a class="background-transparent dropdown-item cursor-pointer" onclick="setSearchType('address')">
+                                    By address
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="background-transparent dropdown-item cursor-pointer" onclick="setSearchType('store')">
+                                    By store name
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<button class="btn btn-primary height-50 box-shadow btn-block" align="center"-->
+                    <!--    type="submit" id="submitStoreSearch" style="">-->
+                    <!--    Search-->
+                    <!--</button>-->
+                </form>
+            </div>
+            <div class="col-md-5 offset-md-1" id="patientSignupForm">
+                <div class="card box-shadow-amp" style="border: none !important; border-radius: 5px !important;">
+                    <div class="card-header background-blue no-border"
+                        style="padding: 20px 0; border-top-right-radius: 5px !important;
+                        border-top-left-radius: 5px !important;">
+                        <h4 class="white" align="center">Sign up for free</h4>
+                    </div>
+                    <div class="card-body" style="border-radius: 5px !important;">
+                        <form onsubmit="signupShopper()" id="shopperSignupForm" data-remote="true">
+                            <input type="email" class="form-control add-margin-bottom" placeholder="Email" id="signupEmail" required="true">
+                            <input type="password" class="form-control add-margin-bottom" placeholder="Password" id="signupPassword" required="true">
+                            <button type="submit" class="btn btn-primary btn-block add-margin-bottom height-55" id="signupBtn" onclick="signupShopper()">
+                                Signup
+                            </button>
+                        </form>
+                        <p class="font-15 add-margin-top">
+                            By signing up, you agree to Senzzu's
+                            <a class="theme-color background-transparent" href="/legal/terms" target="_blank">
+                               terms of use.
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<section class="jumbotron background-white no-border-radius" style="padding-top: 20px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 text-center" style="padding-bottom: 20px;">
+                <h3>How it works</h3>
+                <hr style="height: 2px; background-color: #F27649; border-color: #F27649; width: 40%; margin: auto !important;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 how-to text-center">
+                <img class="icon-image" src="https://s3.us-east-2.amazonaws.com/senzzu/how-1.jpg" height="175">
+                <p class="font-20 bold">Find a pharmacy near you</p>
+                <p class="font-16 add-margin-top">
+                    Choose from several drugstores and pharmacies in your neighborhood.
+                    Select one store or manage several with our pharmacy management feature.
+                </p>
+            </div>
+            <div class="col-md-4 how-to text-center">
+                <img class="icon-image" src="https://s3.us-east-2.amazonaws.com/senzzu/customer_service.png" height="175">
+                <p class="font-20 bold">Upload your prescription</p>
+                <p class="font-16 add-margin-top">
+                    Quickly snap a picture of your prescription and upload it. All
+                    of your information will be securely processed and sent
+                    to your pharmacy.
+                </p>
+            </div>
+            <div class="col-md-4 how-to text-center">
+                <img class="icon-image" src="https://s3.us-east-2.amazonaws.com/senzzu/how-3.jpg" height="175">
+                <p class="font-20 bold">Relax and wait for your delivery</p>
+                <p class="font-16 add-margin-top">
+                    Once ready, your medication will be delivered to you within
+                    minutes. You may also track the delivery in real time using
+                    our built-in tracker.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="jumbotron no-border-radius" style="padding-top: 20px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <h3>For pharmacists</h3>
+                <p style="margin-top: 20px;">
+                    A complete patient relations management system equipped with
+                    AI-powered med-sync, automatic patient updates, HIPAA-compliant messaging
+                    channels, and a driver request feature for immediate and
+                    scheduled medication deliveries.
+                </p>
+                <a class="btn btn-link theme-blue" style="margin-top: 20px; padding: 0; font-size: 18px;"
+                    onclick="window.location.href='/register-a-store'">
+                    LEARN MORE <i class="fa fa-long-arrow-right" style="margin-left: 5px;"></i>
+                </a>
+            </div>
+            <div class="col-md-7">
+                <img src="/images/pharmacy_patient_show.jpg" class="box-shadow-amp"
+                    height="275" style="border-radius: 5px;">
+                <img src="/images/pharmacy_dashboard.jpg" class="box-shadow-amp"
+                    height="275" style="border-radius: 5px; margin-top: -150px; margin-left: 50px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="newsletter" style="padding: 40px 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 text-center" style="padding-bottom: 40px;">
+                <h3>New store alerts, deals, giveaways and more</h3>
+                <hr style="height: 2px; background-color: #F27649; border-color: #F27649; width: 40%; margin: auto !important;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 offset-md-4 how-to text-center">
+                <div id="newsletterResponse"></div>
+                <form id="newsletterSubscriptionForm" data-remote="true" action="/subscribe" method="post" onsubmit="showFormLoader();">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend theme-border">
+                            <span class="input-group-text prepend-group background-white theme-border" id="basic-addon1">
+                                <i class="fa fa-envelope theme-color search-input-icon"></i>
+                            </span>
+                        </div>
+                        <input class="form-control no-box-shadow newsletter-signup theme-border"
+                            id="newsletter-signup" name="email" placeholder="Sign up for our newsletter">
+                        <div class="input-group-append theme-border">
+                            <button class="btn btn-primary no-box-shadow" id="submitEmail" style="padding-left: 15px; padding-right: 15px;">
+                                <i class="fa fa-paper-plane white"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,2 @@
+class HealthAlert < ApplicationRecord
+end

@@ -17,7 +17,9 @@ firestore.settings(settings);
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-    
+        
+        document.querySelector('.navbar').classList.add('fixed-top');
+        $('#main-body').css('padding-top', '75px');
         var url_string = window.location.href;
         var url = new URL(url_string);
         var shopper_id = url.searchParams.get("shopper_id");
@@ -136,77 +138,112 @@ firebase.auth().onAuthStateChanged(function(user) {
         
         <!--Set navbar buttons-->
         $('#mobile-toggle').html(`
-            <a class="nav-link background-transparent cursor-pointer navbar-toggler cart-toggler float-right" data-toggle="modal" data-target="#cartContent" style="border-left: 1px solid; margin-left: 10px; border-radius: 0 !important; padding-left: 8px;">
-                <span class="cart-span"><i class="fa fa-shopping-cart theme-color" style="font-size: 30px;"></i></span>
-                <span id="cartItemCount1" class="badge badge-primary"><%= current_cart.item_count || 0 %></span>
-            </a>
-            <span style="display: none;" class="user-uid"></span>
             <div class="dropdown float-right">
-                <button class="navbar-toggler btn btn-primary btn-nav nav-link white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="shopperMyAccount">
+                <button class="navbar-toggler btn btn-primary btn-nav nav-link white box-shadow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="shopperMyAccount">
                     <i class="fa fa-user"></i> Account <span id="shopperID" style="display: none;">` + uid + `</span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="shopperMyAccount">
+                    <a class="background-transparent dropdown-item cursor-pointer"
+                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard" + "'" + `>
+                            Dashboard
+                    </a>
+                    <div class="dropdown-divider"></div>
                     <a class="background-transparent dropdown-item cursor-pointer"
                         onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/account/settings?current_shopper=true&method=browser'" + `>
                         Settings
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="background-transparent dropdown-item cursor-pointer"
-                        onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/order-history?current_shopper=true&method=browser'" + `>
-                        Order history
+                        onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard/alerts'" + `>
+                        Alerts
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="background-transparent dropdown-item cursor-pointer"
-                        onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/favorites?current_shopper=true&method=browser'" + `>
-                        <i class="fa fa-star theme-yellow"></i> Favorites
+                        onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard/prescriptions'" + `>
+                        Prescriptions
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="background-transparent dropdown-item cursor-pointer"
-                        onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/order-history?current_shopper=true&method=browser'" + `>
-                        Help
+                        onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard/billing'" + `>
+                        Billing History
                     </a>
                     <div class="dropdown-divider"></div>
+                    <!--<a class="background-transparent dropdown-item cursor-pointer"-->
+                    <!--    onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/order-history?current_shopper=true&method=browser'" + `>-->
+                    <!--    Order history-->
+                    <!--</a>-->
+                    <!--<div class="dropdown-divider"></div>-->
+                    <!--<a class="background-transparent dropdown-item cursor-pointer"-->
+                    <!--    onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/favorites?current_shopper=true&method=browser'" + `>-->
+                    <!--    <i class="fa fa-star theme-yellow"></i> Favorites-->
+                    <!--</a>-->
+                    <!--<div class="dropdown-divider"></div>-->
                     <a class="background-transparent dropdown-item cursor-pointer"
                         onclick="signOut();">
                         Logout
                     </a>
                 </div>
             </div>
+            <a class="nav-link navbar-toggler cart-toggler float-right background-blue border-blue btn btn-light" data-toggle="modal" data-target="#cartContent" style="margin-right: 5px; padding: 8px;">
+                <span class="cart-span"><i class="fa fa-shopping-cart white" style="font-size: 20px;"></i></span>
+                <span id="cartItemCount1" class="badge badge-primary"><%= current_cart.item_count || 0 %></span>
+            </a>
+            <span style="display: none;" class="user-uid"></span>
         `);
         $('.navbar-links').html(`
+            <li class="nav-item">
+                <a class="nav-link background-blue border-blue btn btn-light" data-toggle="modal" data-target="#cartContent" style="">
+                    <span class="cart-span"><i class="fa fa-shopping-cart white" style="font-size: 20px;"></i></span>
+                    <span id="cartItemCount" class="badge badge-primary"><%= current_cart.item_count || 0 %></span>
+                </a>
+            </li>
             <li class="nav-item user-uid">
                 <div class="dropdown">
-                    <button class="btn btn-primary btn-nav nav-link white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="shopperMyAccount">
+                    <button class="btn btn-primary btn-nav nav-link white box-shadow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="shopperMyAccount">
                         Account <i class="fa fa-angle-down"></i> <span id="shopperID" style="display: none;">` + uid + `</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="shopperMyAccount">
                         <a class="background-transparent dropdown-item cursor-pointer"
-                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/account/settings?current_shopper=true&method=browser&senzzu_token=" + uid + "'" + `>
+                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard" + "'" + `>
+                            Dashboard
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="background-transparent dropdown-item cursor-pointer"
+                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/account/settings?current_shopper=true&method=browser'" + `>
                             Settings
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="background-transparent dropdown-item cursor-pointer"
-                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/order-history?current_shopper=true&method=browser&senzzu_token=" + uid + "'" + `>
-                            Order history
+                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard/alerts'" + `>
+                            Alerts
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="background-transparent dropdown-item cursor-pointer"
-                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/favorites?current_shopper=true&method=browser'" + `>
-                            <i class="fa fa-star theme-yellow"></i> Favorites
+                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard/prescriptions'" + `>
+                            Prescriptions
                         </a>
                         <div class="dropdown-divider"></div>
+                        <a class="background-transparent dropdown-item cursor-pointer"
+                            onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/dashboard/billing'" + `>
+                            Billing History
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <!--<a class="background-transparent dropdown-item cursor-pointer"-->
+                        <!--    onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/order-history?current_shopper=true&method=browser'" + `>-->
+                        <!--    Order history-->
+                        <!--</a>-->
+                        <!--<div class="dropdown-divider"></div>-->
+                        <!--<a class="background-transparent dropdown-item cursor-pointer"-->
+                        <!--    onclick=` + "window.location.href='/shoppers/" + uid + "/<%= @token %>/favorites?current_shopper=true&method=browser'" + `>-->
+                        <!--    <i class="fa fa-star theme-yellow"></i> Favorites-->
+                        <!--</a>-->
+                        <!--<div class="dropdown-divider"></div>-->
                         <a class="background-transparent dropdown-item cursor-pointer"
                             onclick="signOut();">
                             Logout
                         </a>
                     </div>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link background-transparent cursor-pointer" data-toggle="modal" data-target="#cartContent" style="border-left: 1px solid; padding-left: 15px;">
-                    <span class="cart-span"><i class="fa fa-shopping-cart theme-color" style="font-size: 20px;"></i></span>
-                    <span id="cartItemCount" class="badge badge-primary"><%= current_cart.item_count || 0 %></span>
-                </a>
             </li>
         `);
         
@@ -220,19 +257,19 @@ firebase.auth().onAuthStateChanged(function(user) {
         }
         
         $('#mobile-toggle').html(`
-            <button class="navbar-toggler btn btn-primary btn-nav nav-link white" data-toggle="modal" data-target="#shopperAuthentication">
+            <button class="navbar-toggler btn btn-primary btn-nav nav-link white box-shadow" data-toggle="modal" data-target="#shopperAuthentication">
                 Login/Signup
             </button>
         `);
         
         $('.navbar-links').html(`
             <li class="nav-item main-nav-item">
-                <button class="btn btn-primary btn-nav nav-link btn-white" onclick="window.location.href='/blog'">
+                <button class="btn btn-primary btn-nav nav-link btn-white box-shadow" onclick="window.location.href='/blog'">
                     Blog
                 </button>
             </li>
             <li class="nav-item main-nav-item">
-                <a class="btn btn-primary btn-nav nav-link white" data-toggle="modal" data-target="#shopperAuthentication">
+                <a class="btn btn-primary btn-nav nav-link white box-shadow" data-toggle="modal" data-target="#shopperAuthentication">
                     Login
                 </a>
             </li>

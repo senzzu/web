@@ -72,8 +72,18 @@ a:hover {
 .height-45 {
     height: 45px !important;
 }
+
 .background-blue {
-    background-color: #007bff !important;
+    background-color: #33a3ad !important;
+}
+
+.border-blue {
+    border-color: #33a3ad !important;
+}
+
+
+.background-lightblue {
+    background-color: #99caff !important;
 }
 .background-yellow {
     background-color: #878706 !important;
@@ -176,6 +186,9 @@ div.card-header.background-cyan {
 }
 .font-14 {
     font-size: 14px;
+}
+.font-13 {
+    font-size: 13px !important;
 }
 .font-18 {
     font-size: 18px !important;
@@ -577,9 +590,9 @@ div#rxCol {
 .border-theme-blue {
     border: 1px solid #03032b;
 }
-.border-blue {
-    border-color: #007bff !important;
-}
+// .border-blue {
+//     border-color: #007bff !important;
+// }
 .border-lightgray {
     border: 0.5px solid #e7e7e9 !important;
 }
@@ -1540,7 +1553,7 @@ $size: 40px;
     }
     
     #search {
-        margin-top: -380px !important;
+        // margin-top: -380px !important;
         margin-bottom: 0 !important;
     }
     
@@ -1577,8 +1590,12 @@ $size: 40px;
     }
     
     #search {
-        margin-top: -400px !important;
-        margin-bottom: 35px !important;
+        // margin-top: -400px !important;
+        // margin-bottom: 35px !important;
+    }
+    
+    #patientSignupForm {
+        display: none;
     }
     
     #storeItemsSearch {

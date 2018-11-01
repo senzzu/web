@@ -1,0 +1,48 @@
+<% prescriptions.each do |pt| %>
+    <div class="modal" id="request-refill-modal-<%= pt.id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content box-shadow" style="margin-top: 100px;">
+                <div class="modal-body text-center" id="refill-request-modal-body-<%= pt.id.to_s %>">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span class="font-14 bold theme-blue"><%= pt.med_name %></span>
+        </div>
+        <div class="col-md-3">
+            Prescriber: <span class="font-14 theme-color"><%= pt.prescriber %></span>
+        </div>
+        <div class="col-md-2">
+            Last fill: <span class="font-14 theme-color"><%= pt.filled_on.nil? ? "none" : pt.filled_on.strftime('%m/%d/%y') %></span>
+        </div>
+        <div class="col-md-2">
+            Next fill: <span class="font-14 theme-color"><%= pt.filled_on.nil? ? "TBD" : month_from(pt.filled_on).strftime('%m/%d/%y') %></span>
+        </div>
+        <div class="col-md-1">
+            QTY: <span class="font-14 theme-color"><%= pt.refills_left %></span>
+        </div>
+        <div class="col-md-2">
+            <div class="dropdown">
+                <a class="btn btn-primary font-14 white" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mark as <i class="fa fa-angle-down"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item category cursor-pointer" onclick="markPrescription('ready')">
+                        Ready
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item category cursor-pointer" onclick="markPrescription('ready')">
+                        Cannot process
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <hr style="margin-bottom: 10px; margin-top: 10px;">
+        </div>
+    </div>
+<% end %>

@@ -47,45 +47,49 @@ if (type === "update-shopper") {
         toastr.warning("Unable to remove store from favorites. Please try again.");
     });
 } else if (type === "favorite") {
-    var data = {
-        store_id: <%= @store_id %>,
-        shopper_id: "<%= @shopper_uid %>"
-    };
-    firestore.collection("favorites").add(data)
-    .then((success) => {
-        toastr.success("Store added to favorites!");
-        $.get('/log_favorite', { store_id: <%= @store_id %>, shopper_id: "<%= @shopper_uid %>" });
-    }).catch((error) => {
-        toastr.warning("Unable to remove store from favorites. Please try again.");
-    });
+    <% if @author_string %>
+        var data = {
+            store_id: <%= @store_id %>,
+            shopper_id: "<%= @shopper_uid %>"
+        };
+        firestore.collection("favorites").add(data)
+        .then((success) => {
+            toastr.success("Store added to favorites!");
+            $.get('/log_favorite', { store_id: <%= @store_id %>, shopper_id: "<%= @shopper_uid %>" });
+        }).catch((error) => {
+            toastr.warning("Unable to remove store from favorites. Please try again.");
+        });
+    <% end %>
 } else if (type === "review") {
-    console.log("<%= "#{@content}" %>");
-    var data = {
-        store_id: <%= @store_id %>,
-        shopper_id: "<%= @shopper_uid %>",
-        content: "<%= @review.content %>",
-        author: "<%= @review.author %>"
-    };
-    console.log(data);
-    firestore.collection("reviews").add(data)
-    .then((success) => {
-        toastr.success("Your review has been added!");
-        $('#firstReview').remove();
-        $("#all_reviews").prepend(`
-            <div class="col-md-12">
-                <p style="font-size: 14px;">
-                    <em>"<%= @review.content %>"</em>
-                </p>
-                <p style="font-size: 14px;" class="text-right">
-                    - <%= @review.author %>
-                </p>
-            </div>
-        `);
-        document.querySelector('#reviewInput').value = "";
-        $('#submitReviewBtn').html(`
-            <i class="fa fa-paper-plane"></i>
-        `);
-    }).catch((error) => {
-        toastr.warning("Your review could not be added. Please try again.");
-    });
+    <% if @author_string %>
+        console.log("<%= "#{@content}" %>");
+        var data = {
+            store_id: <%= @store_id %>,
+            shopper_id: "<%= @shopper_uid %>",
+            content: "<%= @review.content %>",
+            author: "<%= @review.author %>"
+        };
+        console.log(data);
+        firestore.collection("reviews").add(data)
+        .then((success) => {
+            toastr.success("Your review has been added!");
+            $('#firstReview').remove();
+            $("#all_reviews").prepend(`
+                <div class="col-md-12">
+                    <p style="font-size: 14px;">
+                        <em>"<%= @review.content %>"</em>
+                    </p>
+                    <p style="font-size: 14px;" class="text-right">
+                        - <%= @review.author %>
+                    </p>
+                </div>
+            `);
+            document.querySelector('#reviewInput').value = "";
+            $('#submitReviewBtn').html(`
+                <i class="fa fa-paper-plane"></i>
+            `);
+        }).catch((error) => {
+            toastr.warning("Your review could not be added. Please try again.");
+        });
+    <% end %>
 }
