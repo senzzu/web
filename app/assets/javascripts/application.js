@@ -25,8 +25,10 @@ $(document).on('page:load', function(){
 
 $(function () {
     $(document).scroll(function () {
-      var $nav = $(".fixed-top");
-      $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+        document.querySelector('.navbar').classList.add('fixed-top');
+        var $nav = $(".navbar");
+        $('#main-body').css('padding-top', '80px');
+        $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
     });
 });
 

@@ -39,10 +39,10 @@
                         </div>
                         <input type="hidden" id="search-type" name="search_type" value="address">
                         <input class="form-control no-box-shadow store-search border-white"
-                            id="store-search" name="q" placeholder="Enter your address..." autocomplete="off" onfocus="showSuggestionBox();">
+                            id="store-search" name="q" placeholder="Search pharmacy by address" autocomplete="off" onfocus="showSuggestionBox();">
                         <div class="dropdown">
                             <a class="btn btn-primary white set-search-type"
-                                style="height: 65px; border-top-left-radius: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 5px !important;
+                                style="height: 65px; border-top-left-radius: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 2px !important;
                                 padding-top: 20px;"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-angle-down bold"></i>
@@ -58,18 +58,10 @@
                             </div>
                         </div>
                     </div>
-                    <!--<button class="btn btn-primary height-50 box-shadow btn-block" align="center"-->
-                    <!--    type="submit" id="submitStoreSearch" style="">-->
-                    <!--    Search-->
-                    <!--</button>-->
                 </form>
             </div>
             <div class="col-md-5 offset-md-1" id="patientSignupForm">
                 <div class="card box-shadow-amp" style="">
-                    <!--<div class="card-header background-blue no-border"-->
-                    <!--    style="padding: 20px 0;">-->
-                    <!--    <h4 class="white" align="center">Sign up for free</h4>-->
-                    <!--</div>-->
                     <div class="card-body" style="border-radius: 2px !important;">
                         <h4 class="theme-color" align="center">Get started for free</h4>
                         <form onsubmit="signupShopper()" id="shopperSignupForm" data-remote="true" style="margin-top: 15px;">
@@ -77,13 +69,13 @@
                             <input type="text" class="form-control add-margin-bottom" placeholder="Last Name" id="signupLastName">
                             <input type="email" class="form-control add-margin-bottom" placeholder="Email" id="signupEmail" required="true">
                             <input type="password" class="form-control add-margin-bottom" placeholder="Password" id="signupPassword" required="true">
-                            <button type="submit" class="btn btn-primary btn-block add-margin-bottom height-55" id="signupBtn" onclick="signupShopper()">
+                            <button type="submit" class="btn btn-primary btn-block add-margin-bottom height-55 box-shadow" id="signupBtn" onclick="signupShopper()">
                                 Signup**
                             </button>
                         </form>
                         <p class="font-15 add-margin-top">
-                            **This is currently a prototype in the testing stages.
-                            The features are not yet optimized, as there are some bugs to fix.
+                            **Several features are not yet optimized. Signup
+                            for our newsletter to be alerted when we officially launch.
                         </p>
                     </div>
                 </div>
@@ -96,35 +88,50 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4 text-center" style="padding-bottom: 20px;">
-                <h3>How it works</h3>
+                <h3>Getting started is easy</h3>
                 <hr style="height: 2px; background-color: #F27649; border-color: #F27649; width: 40%; margin: auto !important;">
             </div>
         </div>
         <div class="row">
             <div class="col-md-4 how-to text-center">
-                <img class="icon-image" src="https://s3.us-east-2.amazonaws.com/senzzu/how-1.jpg" height="175">
-                <p class="font-20 bold">Find a pharmacy near you</p>
+                <img class="icon-image" src="/images/choose_pharmacy.png" height="175">
+                <p class="font-20 bold add-margin-top">
+                    <span class="badge badge-primary" style="font-size: 25px;">
+                        1
+                    </span>
+                    Search
+                </p>
                 <p class="font-16 add-margin-top">
                     Choose from several drugstores and pharmacies in your neighborhood.
                     Select one store or manage several with our pharmacy management feature.
                 </p>
             </div>
             <div class="col-md-4 how-to text-center">
-                <img class="icon-image" src="https://s3.us-east-2.amazonaws.com/senzzu/customer_service.png" height="175">
-                <p class="font-20 bold">Upload your prescription</p>
+                <img class="icon-image" src="/images/upload_prescription.png" height="175">
+                <p class="font-20 bold add-margin-top">
+                    <span class="badge badge-primary" style="font-size: 25px;">
+                        2
+                    </span>
+                    Upload
+                </p>
                 <p class="font-16 add-margin-top">
                     Quickly snap a picture of your prescription and upload it. All
                     of your information will be securely processed and sent
-                    to your pharmacy.
+                    to the selected pharmacy.
                 </p>
             </div>
             <div class="col-md-4 how-to text-center">
-                <img class="icon-image" src="https://s3.us-east-2.amazonaws.com/senzzu/how-3.jpg" height="175">
-                <p class="font-20 bold">Relax and wait for your delivery</p>
+                <img class="icon-image" src="/images/wait_delivery.png" height="175">
+                <p class="font-20 bold add-margin-top">
+                    <span class="badge badge-primary" style="font-size: 25px;">
+                        3
+                    </span>
+                    Delivery
+                </p>
                 <p class="font-16 add-margin-top">
                     Once ready, your medication will be delivered to you within
-                    minutes. You can also track the status in real time using
-                    our delivery tracker.
+                    minutes. You can also track the delivery status in real time using
+                    our courier tracker.
                 </p>
             </div>
         </div>
