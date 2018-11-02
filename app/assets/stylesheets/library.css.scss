@@ -64,7 +64,7 @@ a:hover {
     border-color: #fff !important;
 }
 .radius-5 {
-    border-radius: 5px !important;
+    border-radius: 2px !important;
 }
 .height-40 {
     height: 40px !important;
@@ -648,7 +648,7 @@ div#rxCol {
     background: #fff;
     padding: 1px;
     border: 1px solid #ccccd4;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 .req-search-icon {
     font-size: 12px !important;
@@ -852,7 +852,7 @@ div#rxCol {
 .badge-circle {
     height: 10px;
     width: 10px;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 .badge-circle-medium {
     height: 30px;
@@ -1266,7 +1266,7 @@ a.btn-link.cta-signup:hover, a.btn-link.cta-login:hover {
     border: 1px solid #e1e1e2;
     padding-bottom: 70px;
     padding-top: 30px;
-    border-radius: 5px;
+    border-radius: 2px;
     // box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
 }
 #loginBox, #signupBox {
@@ -1570,6 +1570,10 @@ $size: 40px;
 @media only screen and (max-device-width: 767.98px) {
     #mobile-toggle {
         display: block !important;
+    }
+    
+    #for-pharmacy-images {
+        overflow-x: hidden !important;
     }
     
     .social-share-inline {

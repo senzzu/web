@@ -25,7 +25,7 @@
 
 .navbar {
     /*background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/navbar_banner.png') !important;*/
-    background-color: #33a3ad !important;
+    background-color: #fff !important;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -40,6 +40,10 @@
 
 .navbar-toggler {
     padding: .75rem;
+}
+
+.btn:focus {
+    box-shadow: none !important;
 }
 
 .platform-color {
@@ -111,7 +115,7 @@
 }
 
 #banner-text {
-    font-size: 55px;
+    font-size: 45px;
     font-weight: 900;
 }
 
@@ -173,7 +177,7 @@ div.how-to > i {
 
 #body {
     /*padding: 100px 0 0 0;*/
-    /*margin: 5px 0 0 0;*/
+    /*margin:2px 0 0 0;*/
     /*font-family: 'Ubuntu', sans-serif !important;*/
     z-index: 1;
 }
@@ -200,7 +204,7 @@ div.how-to > i {
     height: 10px;
     width: 10px;
     padding: 0;
-    border-radius: 5px;
+    border-radius:2px;
     font-size: 15px !important;
 }
 
@@ -208,7 +212,7 @@ div.how-to > i {
     height: 10px;
     width: 10px;
     padding: 0;
-    border-radius: 5px;
+    border-radius:2px;
     background-color: #ff3232 !important;
     font-size: 15px !important;
 }
@@ -316,7 +320,7 @@ hr, p {
 
 button, .btn {
     color: #fff;
-    border-radius: 5px;
+    border-radius:2px;
 }
 
 .theme-color {
@@ -332,12 +336,12 @@ button, .btn {
 }
 
 .card, .modal-content {
-    border-radius: 5px !important;
+    border-radius:2px !important;
 }
 
 .card-header {
-    border-top-right-radius: 5px !important;
-    border-top-left-radius: 5px !important;
+    border-top-right-radius:2px !important;
+    border-top-left-radius:2px !important;
 }
 
 button {
@@ -421,8 +425,8 @@ canvas {
 
 .modal-header {
     border: none;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius:2px;
+    border-top-right-radius:2px;
     font-size: 16px;
     background-color: #33a3ad !important;
     color: #fff;
@@ -530,7 +534,7 @@ canvas {
 
 .navigation-link:hover, .active {
     background-color: #fff;
-    border-radius: 5px;
+    border-radius:2px;
     box-shadow: 3px 6px 12px 3px rgba(50,50,70,.08);
     color: #F27649;
 }
@@ -543,7 +547,7 @@ canvas {
 }
 
 .fixed-card-padding {
-    padding: 5px 15px 15px 15px !important;
+    padding:2px 15px 15px 15px !important;
     margin: 0;
 }
 
@@ -586,7 +590,7 @@ canvas {
     
     .prepend-group {
         border-bottom-right-radius: 0 !important;
-        border-bottom-left-radius: 0 !important;
+        /*border-bottom-left-radius: 0 !important;*/
     }
     
     .set-search-type {

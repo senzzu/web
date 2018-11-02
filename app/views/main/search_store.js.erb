@@ -3,7 +3,7 @@ $('#allStores').html(`
         <div class="row">
             <% @stores.each do |store| %>
                 <div class="col-md-4 cursor-pointer" style="margin-bottom: 20px;" onclick="window.location.replace('/stores/<%= store.id %>/<%= store.slug %>')">
-                    <div class="card no-border" style="border-radius: 5px;">
+                    <div class="card no-border" style="border-radius: 2px;">
                         <div class="card-body"
                             style="border-top-left-radius: 5px; border-top-right-radius: 5px;
                                 background-image: url('<%= store.banner_image %>');

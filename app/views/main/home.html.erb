@@ -1,7 +1,7 @@
 <style>
     .navbar {
         /*background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/navbar_banner.png') !important;*/
-        background-color: #33a3ad !important;
+        background-color: #fff !important;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -16,7 +16,7 @@
 </style>
 
 <section id="banner"
-    style="height: 100%; min-height: 100%; background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/navbar_banner.png');
+    style="height: 600px; min-height: 100%; background-image: url('/images/home_banner.png');
     background-size: cover; background-repeat: no-repeat;
     background-position: center; width: 100%;">
 
@@ -65,14 +65,16 @@
                 </form>
             </div>
             <div class="col-md-5 offset-md-1" id="patientSignupForm">
-                <div class="card box-shadow-amp" style="border: none !important; border-radius: 5px !important;">
-                    <div class="card-header background-blue no-border"
-                        style="padding: 20px 0; border-top-right-radius: 5px !important;
-                        border-top-left-radius: 5px !important;">
-                        <h4 class="white" align="center">Sign up for free</h4>
-                    </div>
-                    <div class="card-body" style="border-radius: 5px !important;">
-                        <form onsubmit="signupShopper()" id="shopperSignupForm" data-remote="true">
+                <div class="card box-shadow-amp" style="">
+                    <!--<div class="card-header background-blue no-border"-->
+                    <!--    style="padding: 20px 0;">-->
+                    <!--    <h4 class="white" align="center">Sign up for free</h4>-->
+                    <!--</div>-->
+                    <div class="card-body" style="border-radius: 2px !important;">
+                        <h4 class="theme-color" align="center">Get started for free</h4>
+                        <form onsubmit="signupShopper()" id="shopperSignupForm" data-remote="true" style="margin-top: 15px;">
+                            <input type="text" class="form-control add-margin-bottom" placeholder="First Name" id="signupFirstName">
+                            <input type="text" class="form-control add-margin-bottom" placeholder="Last Name" id="signupLastName">
                             <input type="email" class="form-control add-margin-bottom" placeholder="Email" id="signupEmail" required="true">
                             <input type="password" class="form-control add-margin-bottom" placeholder="Password" id="signupPassword" required="true">
                             <button type="submit" class="btn btn-primary btn-block add-margin-bottom height-55" id="signupBtn" onclick="signupShopper()">
@@ -121,8 +123,8 @@
                 <p class="font-20 bold">Relax and wait for your delivery</p>
                 <p class="font-16 add-margin-top">
                     Once ready, your medication will be delivered to you within
-                    minutes. You may also track the delivery in real time using
-                    our built-in tracker.
+                    minutes. You can also track the status in real time using
+                    our delivery tracker.
                 </p>
             </div>
         </div>
@@ -132,35 +134,37 @@
 <section class="jumbotron no-border-radius" style="padding-top: 20px;">
     <div class="container">
         <div class="row">
-            <div class="col-md-5">
-                <h3>For pharmacists</h3>
-                <p style="margin-top: 20px;">
-                    A complete patient relations management system equipped with
-                    AI-powered med-sync, automatic patient updates, HIPAA-compliant messaging
-                    channels, and a driver request feature for immediate and
-                    scheduled medication deliveries.
-                </p>
-                <a class="btn btn-link theme-blue" style="margin-top: 20px; padding: 0; font-size: 18px;"
-                    onclick="window.location.href='/register-a-store'">
-                    LEARN MORE <i class="fa fa-long-arrow-right" style="margin-left: 5px;"></i>
-                </a>
+            <div class="col-md-5" style="height: 100%;">
+                <div style="margin-top: 20%;">
+                    <h3>For pharmacists</h3>
+                    <p style="margin-top: 20px;">
+                        A complete patient relations management system equipped with
+                        AI-powered med-sync, automatic patient updates, HIPAA-compliant messaging
+                        channels, and a driver request feature for immediate and
+                        scheduled medication deliveries.
+                    </p>
+                    <a class="btn btn-link theme-blue" style="margin-top: 20px; padding: 0; font-size: 18px;"
+                        onclick="window.location.href='/register-a-store'">
+                        LEARN MORE <i class="fa fa-long-arrow-right" style="margin-left: 5px;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-7" id="for-pharmacy-images">
                 <img src="/images/pharmacy_patient_show.jpg" class="box-shadow-amp"
-                    height="275" style="border-radius: 5px;">
+                    height="275" style="border-radius: 2px;">
                 <img src="/images/pharmacy_dashboard.jpg" class="box-shadow-amp"
-                    height="275" style="border-radius: 5px; margin-top: -150px; margin-left: 50px;">
+                    height="275" style="border-radius: 2px; margin-top: -150px; margin-left: 50px;">
             </div>
         </div>
     </div>
 </section>
 
-<section id="newsletter" style="padding: 40px 0;">
+<section id="newsletter" style="padding-bottom: 20px;">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 offset-md-4 text-center" style="padding-bottom: 40px;">
-                <h3>New store alerts, deals, giveaways and more</h3>
-                <hr style="height: 2px; background-color: #F27649; border-color: #F27649; width: 40%; margin: auto !important;">
+            <div class="col-md-8 offset-md-2 text-center" style="padding-bottom: 30px;">
+                <h3>New pharmacy alerts, medications, tips and more</h3>
+                <hr style="height: 2px; background-color: #F27649; border-color: #F27649; width: 20%; margin: auto !important;">
             </div>
         </div>
         <div class="row">
