@@ -226,9 +226,15 @@ div.how-to > i {
 }
 
 .badge-circle-medium {
-    height: 30px;
-    width: 30px;
-    border-radius: 15px !important;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px !important;
+    background-color: #637fff;
+    color: #fff !important;
+}
+
+.footer-header {
+    color: #97a9ff;
 }
 
 .arrow-up {
@@ -336,7 +342,7 @@ button, .btn {
 }
 
 .card, .modal-content {
-    border-radius:2px !important;
+    border-radius: 2px !important;
 }
 
 .card-header {
