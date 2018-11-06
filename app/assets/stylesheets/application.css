@@ -636,4 +636,8 @@ canvas {
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
+    
+    #about-banner1, #about-banner2, #about-banner3 {
+        height: 800px;
+    }
 }

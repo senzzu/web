@@ -1,11 +1,17 @@
-<section id="store-login" class="container" style="margin-bottom: 75px; margin-top: 60px;">
+<style>
+  nav, footer {
+    display: none !important;
+  }
+</style>
+
+<section id="store-login" class="container" style="margin-bottom: 40px; margin-top: 120px;">
   <div class="row">
     <!--<div class="col-md-6" style="background-image: url('https://s3.us-east-2.amazonaws.com/senzzu/store_login_banner.png'); background-size: cover; background-position: center; height: 500px;">-->
       
     <!--</div>-->
     <div class="col-md-6 offset-md-3">
       <!--<h1 align="center" style="margin-bottom: 20px;" class="bold">Welcome back!</h1>-->
-      <div class="card theme-border">
+      <div class="card theme-border box-shadow">
         <div class="card-body">
           <h5 align="center" class="theme-color add-margin-bottom">Log in</h5>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -29,7 +35,7 @@
               <div class="actions" style="margin-top: 10px;">
                 <div class="row">
                   <div class="col-md-12">
-                    <%= f.submit "Log in", class:"btn btn-primary btn-block height-55 log-in no-box-shadow", id:"logIn" %>
+                    <%= f.submit "Log in", class:"btn btn-primary btn-block height-55 log-in box-shadow", id:"logIn", data: {"disable-with": "Logging you in..."} %>
                   </div>
                   <div class="col-md-12 add-padding-top text-center">
                     <% if !request.original_url.include?('admin') %>
@@ -47,10 +53,3 @@
     </div>
   </div>
 </section>
-
-<script>
-  $('#new_store').on('submit', e => {
-    $('#logIn').css('opacity', '0.7');
-    document.getElementById('logIn').value = 'Logging you in...';
-  });
-</script>
