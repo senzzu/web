@@ -160,10 +160,11 @@
 
 .prepend-group:hover {
     height: 65px;
-    border-color: #fff;
+    border-color: #fff !important;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: none !important;
+    background-color: #fff !important;
 }
 
 .theme-border {
@@ -237,6 +238,18 @@ div.how-to > i {
     color: #97a9ff;
 }
 
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+span.footer-link.copyright:hover {
+    text-decoration: none !important;
+}
+
+.copyright, span.footer-link.copyright:hover {
+    color: #97a9ff !important;
+}
+
 .arrow-up {
     height: 40px;
     width: 40px;
@@ -252,7 +265,11 @@ div.how-to > i {
 }
 
 p {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.roboto {
+    font-family: 'Roboto', sans-serif !important;
 }
 
 input {
@@ -362,14 +379,14 @@ button:hover {
 }
 
 .btn-link.nav-link {
-    color: #4c4c4c !important;
+    color: #4c4c4c;
     padding-left: 0;
     padding-right: 0;
 }
 
 .btn-nav.nav-link {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
 }
 
 .nav-link {
@@ -566,6 +583,14 @@ canvas {
         border-bottom-left-radius: 2px !important;
     }
     
+    .how-to-padded {
+        margin-top: 25px;
+    }
+    
+    #for-pharmacy-images {
+        margin-top: 20px;
+    }
+    
     #socialTags {
         text-align: center !important;
         margin-top: 15px;
@@ -579,8 +604,16 @@ canvas {
         padding-bottom: 0 !important;
     }
     
-    .article-author-card {
+    .article-author-card, .footer {
         text-align: center !important;
+    }
+    
+    #footer-legal {
+        margin-top: 20px !important;
+    }
+    
+    .footer-header-margined {
+        margin-top: 30px;
     }
     
     #submitStoreSearch {

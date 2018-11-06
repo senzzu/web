@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   get '/log_favorite', to: 'main#log_favorite'
   get '/firebase_listener', to: 'main#firebase_listener'
   post '/log_firebase_reviews_data', to: 'main#log_firebase_reviews_data'
+  get '/about', to: 'main#about'
   
   ## Blog routes
   get '/blog', to: 'main#blog'
